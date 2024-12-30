@@ -1,0 +1,23 @@
+{
+  "app": {
+    "protocol": "https",
+    "port": 443,
+    "privateKeyPath": "",
+    "certificatePath": ""
+  },
+  "db": {
+    "address": "mongodb://server:123456789@127.0.0.1:21771",
+    "name": "prod",
+    "query": ""
+  },
+  "secrets": {
+    "key": "hungus-mongoose",
+    "expiresIn": "12h"
+  },
+  "cors": {
+    "server": "https://node63.cs.colman.ac.il",
+    "origin": "https://node63.cs.colman.ac.il",
+    "credentials": true,
+    "optionSuccessStatus": 200
+  }
+}

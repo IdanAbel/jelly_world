@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=production node dist/index.js",
+    "dev": "NODE_ENV=dev nodemon —exec babel-node src/index.js",
+    "build": "babel src -d dist",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "keywords": [],
   "author": "",
