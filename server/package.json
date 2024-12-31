@@ -1,12 +1,14 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
-    "start": "NODE_ENV=production node dist/index.js",
-    "dev": "NODE_ENV=dev nodemon —exec babel-node src/index.js",
-    "build": "babel src -d dist",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "dev": "cp .env_dev .env && nodemon ./src/app.ts",
+    "start": "cp .env_dev .env tsc && node ./dist/app.js",
+    "test": "cp .env_test .env jest && --detectOpenHandles --forceExit --runInBand",
+    "testAuth": "cp .env_test .env && jest --detectOpenHandles --forceExit auth.test.ts",
+    "testPost": "cp .env_test .env && jest --detectOpenHandles --forceExit posts.test.ts",
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "",
@@ -29,7 +31,6 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^22.10.2",
     "@types/supertest": "^6.0.2",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.7",
