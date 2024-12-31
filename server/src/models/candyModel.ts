@@ -1,4 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { ReviewSchema, Review } from './reviewModel';
+import User from './userModel';
 
 export interface Candy extends Document {
   name: string;
@@ -6,8 +8,6 @@ export interface Candy extends Document {
   flavor: string;
   summary: string;
   rating: number;
-  manufacturer: string;
-  ingredients: string[];
   reviewsAmount: number;
   reviews: Review[];
   createdBy: mongoose.Types.ObjectId;
@@ -36,14 +36,6 @@ const CandySchema: Schema = new Schema(
     rating: {
       type: Number,
       default: 0,
-    },
-    manufacturer: {
-      type: String,
-      required: true,
-    },
-    ingredients: {
-      type: [String],
-      required: true,
     },
     reviewsAmount: {
       type: Number,
