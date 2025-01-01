@@ -1,15 +1,10 @@
-import asyncHandler from 'express-async-handler';
-import { Request, Response } from 'express';
-import Candy from '../models/CandyModel';
+import { Response } from 'express';
+import Candy from '../models/candyModel';
+import { customAsyncHandler, CustomRequest } from '../common/customTypes';
+import ReviewModel, { Review } from '../models/reviewModel';
+import mongoose from 'mongoose';
 
-interface Review {
-  name: string;
-  rating: number;
-  comment: string;
-  user: string;
-}
-
-const getCandies = asyncHandler(async (req: Request, res: Response) => {
+const getCandies = customAsyncHandler(async (req: CustomRequest, res: Response) => {
   const keyword = req.query.keyword
     ? {
         name: {
@@ -36,7 +31,7 @@ const getCandies = asyncHandler(async (req: Request, res: Response) => {
   res.json({ candies, count });
 });
 
-const getCandyById = asyncHandler(async (req: Request, res: Response) => {
+const getCandyById = customAsyncHandler(async (req: CustomRequest, res: Response) => {
   const candy = await Candy.findById(req.params.id).populate({
     path: 'reviews',
     populate: {
@@ -57,11 +52,11 @@ const getCandyById = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-const deleteCandy = asyncHandler(async (req: Request, res: Response) => {
+const deleteCandy = customAsyncHandler(async (req: CustomRequest, res: Response) => {
   const candy = await Candy.findById(req.params.id);
 
   if (candy) {
-    await candy.remove();
+    await candy.deleteOne();
     res.json({ message: 'Candy removed' });
   } else {
     res.status(404);
@@ -69,7 +64,7 @@ const deleteCandy = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-const createCandy = asyncHandler(async (req: Request, res: Response) => {
+const createCandy = customAsyncHandler(async (req: CustomRequest, res: Response) => {
   const { body, user } = req;
 
   const candy = new Candy({ ...body, createdBy: user._id });
@@ -78,9 +73,9 @@ const createCandy = asyncHandler(async (req: Request, res: Response) => {
   res.status(201).json(createdCandy);
 });
 
-const updateCandy = asyncHandler(async (req: Request, res: Response) => {
+const updateCandy = customAsyncHandler(async (req: CustomRequest, res: Response) => {
   const {
-    body: { name, summary, image, manufacturer, ingredients, flavor },
+    body: { name, summary, image, flavor },
     params: { id },
   } = req;
 
@@ -88,7 +83,6 @@ const updateCandy = asyncHandler(async (req: Request, res: Response) => {
     name,
     summary,
     image,
-    ingredients,
     flavor,
   }, { new: true });
 
@@ -100,7 +94,7 @@ const updateCandy = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-const createCandyReview = asyncHandler(async (req: Request, res: Response) => {
+const createCandyReview = customAsyncHandler(async (req: CustomRequest, res: Response) => {
   const {
     body: { rating, comment },
   } = req;
@@ -108,15 +102,15 @@ const createCandyReview = asyncHandler(async (req: Request, res: Response) => {
   const candy = await Candy.findById(req.params.id);
 
   if (candy) {
-    const review: Review = {
-      name: req.user.name,
+    const review = new ReviewModel({
+      //   name: req.user.name,
       rating: Number(rating),
       comment,
-      user: req.user._id,
-    };
+      user: new mongoose.Types.ObjectId(req.user._id), 
+    });
 
     candy.reviews.push(review);
-    candy.numReviews = candy.reviews.length;
+    candy.reviewsAmount = candy.reviews.length;
     candy.rating =
       candy.reviews.reduce((acc: number, item: Review) => item.rating + acc, 0) /
       candy.reviews.length;
@@ -129,7 +123,7 @@ const createCandyReview = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-const getTopCandies = asyncHandler(async (req: Request, res: Response) => {
+const getTopCandies = customAsyncHandler(async (req: CustomRequest, res: Response) => {
   const candies = await Candy.find({}).sort({ rating: -1 }).limit(4);
   res.json(candies);
 });

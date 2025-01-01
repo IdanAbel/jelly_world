@@ -195,8 +195,6 @@ export default router;
  *           type: number
  *           minimum: 0
  *           maximum: 10
- *         manufacturer:
- *           type: string
  *         stock:
  *           type: integer
  *         reviews:
@@ -211,7 +209,6 @@ export default router;
  *         - flavor
  *         - summary
  *         - rating
- *         - manufacturer
  *         - stock
  *         - reviews
  *         - createdBy
@@ -225,7 +222,6 @@ export default router;
  *         flavor: Chocolate
  *         summary: "A delicious chocolate candy that melts in your mouth."
  *         rating: 9.5
- *         manufacturer: "Sweet Tooth Inc."
  *         stock: 120
  *         reviews:
  *           - id: 1
