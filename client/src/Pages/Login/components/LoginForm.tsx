@@ -11,7 +11,7 @@ import Message from "../../../Components/Message"; //TODO
 import { useAuth } from "../../../context/AuthContext"; //TODO
 import { RootState } from "../../../store"; //TODO
 
-const Login = () => {
+const LoginForm = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const navigate = useNavigate();
@@ -78,4 +78,4 @@ const Login = () => {
     );
 };
 
-export default SelfLogin;
+export default LoginForm;
