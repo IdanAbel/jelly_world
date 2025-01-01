@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Button } from "@mui/material";
 import styled from "styled-components";
 
-import LogoutByGoogle from "./LogoutByGoogle"; //TODO
-import { useAuth } from "../context/AuthContext"; //TODO
 import React from "react";
+import { useAuth } from "../Context/AuthContext";
+import { logout } from "../services/userService";
+import LogoutPanel from "./LogoutPanel.tsx";
 
 interface UserLoginState {
   userInfo: {
@@ -34,7 +35,7 @@ const StyledNavbar = styled.nav`
 
 const StyledLink = styled(Link)`
   h1 {
-    color:rgb(60, 185, 168);
+    color: rgb(60, 185, 168);
   }
   margin-left: 16px;
   text-decoration: none;
@@ -53,7 +54,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(logout());
+    dispatch(logout() as any);
   };
 
   const handleClick = () => {
@@ -69,34 +70,41 @@ const Navbar: React.FC = () => {
         </StyledLink>
       </Box>
       {userInfo ? (
-        <Box sx={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "auto" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            marginLeft: "auto",
+          }}
+        >
           <Button
             sx={{
               backgroundColor: "white",
               color: "black",
               borderRadius: "10px",
-              marginRight: '5px',
+              marginRight: "5px",
               "&:hover": {
                 backgroundColor: "red",
               },
             }}
             onClick={handleClick}
           >
-            {'Add Candy'}
+            {"Add Candy"}
           </Button>
           <Button
             sx={{
               backgroundColor: "white",
               color: "black",
               borderRadius: "10px",
-              marginRight: '-8px',
+              marginRight: "-8px",
               "&:hover": {
                 backgroundColor: "red",
               },
             }}
             onClick={handleLogout}
           >
-            {isAuthenticatedWithGoogle ? <LogoutByGoogle /> : "Logout"}
+            {isAuthenticatedWithGoogle ? <LogoutPanel /> : "Logout"}
           </Button>
           <StyledLink to="/profile">
             <Button
@@ -104,7 +112,7 @@ const Navbar: React.FC = () => {
                 backgroundColor: "white",
                 color: "black",
                 borderRadius: "10px",
-                marginLeft: '-4px !important',
+                marginLeft: "-4px !important",
                 "&:hover": {
                   backgroundColor: "red",
                 },
@@ -121,7 +129,7 @@ const Navbar: React.FC = () => {
               backgroundColor: "white",
               color: "black",
               borderRadius: "10px",
-              marginRight: '5px',
+              marginRight: "5px",
               "&:hover": {
                 backgroundColor: "red",
               },

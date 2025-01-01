@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response } from "express";
 import {
   getCandies,
   getCandyById,
@@ -7,21 +7,18 @@ import {
   updateCandy,
   createCandyReview,
   getTopCandies,
-} from '../controllers/candyController';
-
-
-//TODO - authMiddleware
-import { protect } from '../middlewares/authMiddleware';
+} from "../controllers/candyController";
+import { protect } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
-router.get('/', getCandies);
-router.post('/', protect, createCandy);
-router.post('/:id/reviews', protect, createCandyReview);
-router.get('/top', getTopCandies);
-router.get('/:id', getCandyById);
-router.delete('/:id', protect, deleteCandy);
-router.put('/:id', protect, updateCandy);
+router.get("/", getCandies);
+router.post("/", protect, createCandy);
+router.post("/:id/reviews", protect, createCandyReview);
+router.get("/top", getTopCandies);
+router.get("/:id", getCandyById);
+router.delete("/:id", protect, deleteCandy);
+router.put("/:id", protect, updateCandy);
 
 export default router;
 

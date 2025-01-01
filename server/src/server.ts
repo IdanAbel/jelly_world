@@ -10,7 +10,7 @@ import swaggerUI from "swagger-ui-express";
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/auth", authRoutes);
+app.use("/api/users", authRoutes);
 
 const options = {
   definition: {

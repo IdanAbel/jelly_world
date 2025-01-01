@@ -1,211 +1,164 @@
-import { NextFunction, Request, Response } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { Document } from 'mongoose';
-import userModel, { IUser } from '../models/userModel';
+import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
+import { Request, Response } from "express";
+import User, { IUser } from "../models/userModel";
+
+const clientId =
+  "640622037841-rmcrulj2s0ecud57vip8rvk9fjrfs225.apps.googleusercontent.com";
+const googleClient = new OAuth2Client(clientId);
+
+const getAll = async (req: Request, res: Response) => {
+  const users = await User.find();
+  res.json(users);
+};
+
+const getById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = await User.findById(id).select("-password");
+
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+};
+
+const getUserProfile = async (req: Request, res: Response) => {
+  const { _id } = req.body as IUser;
+  const user = await User.findById(_id);
+
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      image: user.image || "/assets/userImage.png",
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+};
+
+const deleteUser = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const deletedUser = await User.findByIdAndDelete(id);
+
+  if (deletedUser) {
+    res.json({ message: "User deleted successfully" });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+};
 
 const register = async (req: Request, res: Response) => {
-    try {
-        const password = req.body.password;
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        const user = await userModel.create({
-            email: req.body.email,
-            password: hashedPassword,
-        });
-        res.status(200).send(user);
-    } catch (err) {
-        res.status(400).send(err);
-    }
+  try {
+    const userToCreate = new User(req.body);
+    const newUser = await userToCreate.save();
+
+    const token = jwt.sign({ user: newUser }, process.env.TOKEN_SECRET!, {
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRES!,
+    });
+
+    res.json({ token, id: newUser.id, name: newUser.name });
+  } catch (error) {
+    console.error(error);
+    res.json({ error: "Internal Server Error" }).status(500);
+  }
 };
 
-type tTokens = {
-    accessToken: string,
-    refreshToken: string
-}
-
-const generateToken = (userId: string): tTokens | null => {
-    if (!process.env.TOKEN_SECRET) {
-        return null;
-    }
-    // generate token
-    const random = Math.random().toString();
-    const accessToken = jwt.sign({
-        _id: userId,
-        random: random
-    },
-        process.env.TOKEN_SECRET,
-        { expiresIn: process.env.TOKEN_EXPIRES });
-
-    const refreshToken = jwt.sign({
-        _id: userId,
-        random: random
-    },
-        process.env.TOKEN_SECRET,
-        { expiresIn: process.env.REFRESH_TOKEN_EXPIRES });
-    return {
-        accessToken: accessToken,
-        refreshToken: refreshToken
-    };
-};
 const login = async (req: Request, res: Response) => {
-    try {
-        const user = await userModel.findOne({ email: req.body.email });
-        if (!user) {
-            res.status(400).send('wrong username or password');
-            return;
-        }
-        const validPassword = await bcrypt.compare(req.body.password, user.password);
-        if (!validPassword) {
-            res.status(400).send('wrong username or password');
-            return;
-        }
-        if (!process.env.TOKEN_SECRET) {
-            res.status(500).send('Server Error');
-            return;
-        }
-        // generate token
-        const tokens = generateToken(user._id);
-        if (!tokens) {
-            res.status(500).send('Server Error');
-            return;
-        }
-        if (!user.refreshToken) {
-            user.refreshToken = [];
-        }
-        user.refreshToken.push(tokens.refreshToken);
-        await user.save();
-        res.status(200).send(
-            {
-                accessToken: tokens.accessToken,
-                refreshToken: tokens.refreshToken,
-                _id: user._id
-            });
+  const { email, password } = req.body;
 
-    } catch (err) {
-        res.status(400).send(err);
-    }
+  const user = await User.findOne({ email });
+
+  if (!user || !(await user.matchPassword(password))) {
+    res.json({ error: "Invalid email or password" }).status(401);
+  }
+
+  const token = jwt.sign({ user }, process.env.TOKEN_SECRET!);
+
+  res.json({ token, id: user!.id, name: user!.name });
 };
 
-type tUser = Document<unknown, {}, IUser> & IUser & Required<{
-    _id: string;
-}> & {
-    __v: number;
-}
-const verifyRefreshToken = (refreshToken: string | undefined) => {
-    return new Promise<tUser>((resolve, reject) => {
-        //get refresh token from body
-        if (!refreshToken) {
-            reject("fail");
-            return;
-        }
-        //verify token
-        if (!process.env.TOKEN_SECRET) {
-            reject("fail");
-            return;
-        }
-        jwt.verify(refreshToken, process.env.TOKEN_SECRET, async (err: any, payload: any) => {
-            if (err) {
-                reject("fail");
-                return
-            }
-            //get the user id fromn token
-            const userId = payload._id;
-            try {
-                //get the user form the db
-                const user = await userModel.findById(userId);
-                if (!user) {
-                    reject("fail");
-                    return;
-                }
-                if (!user.refreshToken || !user.refreshToken.includes(refreshToken)) {
-                    user.refreshToken = [];
-                    await user.save();
-                    reject("fail");
-                    return;
-                }
-                const tokens = user.refreshToken!.filter((token) => token !== refreshToken);
-                user.refreshToken = tokens;
+const googleLogin = async (req: Request, res: Response) => {
+  const { tokenId } = req.body;
 
-                resolve(user);
-            } catch (err) {
-                reject("fail");
-                return;
-            }
-        });
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken: tokenId,
+      audience: clientId,
     });
-}
 
-const logout = async (req: Request, res: Response) => {
-    try {
-        const user = await verifyRefreshToken(req.body.refreshToken);
-        await user.save();
-        res.status(200).send("success");
-    } catch (err) {
-        res.status(400).send("fail");
+    const { sub: googleUserId, email, name, picture } = ticket.getPayload()!;
+    const googleUser = await User.findOne({ googleId: googleUserId });
+
+    const token = jwt.sign(
+      { googleUserId, email, name },
+      process.env.TOKEN_SECRET!
+    );
+
+    if (!googleUser) {
+      const newUser = await new User({
+        name,
+        email,
+        googleId: googleUserId,
+        image: picture,
+      }).save();
+      res.json({ token, id: newUser._id, name, image: picture });
+    } else {
+      res.json({ token, id: googleUser._id, name, image: picture });
     }
+  } catch (error) {
+    console.error("Error during Google token verification:", error);
+    res.json({ error: "Internal Server Error" }).status(500);
+  }
 };
 
-const refresh = async (req: Request, res: Response) => {
-    try {
-        const user = await verifyRefreshToken(req.body.refreshToken);
-        if (!user) {
-            res.status(400).send("fail");
-            return;
-        }
-        const tokens = generateToken(user._id);
+const updateUserProfile = async (req: Request, res: Response) => {
+  const { _id } = req.body as IUser;
 
-        if (!tokens) {
-            res.status(500).send('Server Error');
-            return;
-        }
-        if (!user.refreshToken) {
-            user.refreshToken = [];
-        }
-        user.refreshToken.push(tokens.refreshToken);
-        await user.save();
-        res.status(200).send(
-            {
-                accessToken: tokens.accessToken,
-                refreshToken: tokens.refreshToken,
-                _id: user._id
-            });
-        //send new token
-    } catch (err) {
-        res.status(400).send("fail");
-    }
-};
+  const user = await User.findById(_id);
 
-type Payload = {
-    _id: string;
-};
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.image = req.body.image || user.image;
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const authorization = req.header('authorization');
-    const token = authorization && authorization.split(' ')[1];
-
-    if (!token) {
-        res.status(401).send('Access Denied');
-        return;
-    }
-    if (!process.env.TOKEN_SECRET) {
-        res.status(500).send('Server Error');
-        return;
+    if (req.body.password) {
+      user.password = req.body.password;
     }
 
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, payload) => {
-        if (err) {
-            res.status(401).send('Access Denied');
-            return;
-        }
-        req.params.userId = (payload as Payload)._id;
-        next();
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      image: updatedUser.image,
+      token: generateToken(updatedUser._id),
     });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
 };
 
-export default {
-    register,
-    login,
-    refresh,
-    logout
+const generateToken = (id: any) => {
+  return jwt.sign({ id }, process.env.TOKEN_SECRET!, {
+    expiresIn: process.env.REFRESH_TOKEN_EXPIRES!,
+  });
+};
+
+export {
+  getAll,
+  getById,
+  getUserProfile,
+  deleteUser,
+  register,
+  login,
+  googleLogin,
+  updateUserProfile,
 };
