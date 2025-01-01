@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware, AnyAction } from "redux";
-import thunk, { ThunkMiddleware } from "redux-thunk";
+import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
   userDeleteReducer,

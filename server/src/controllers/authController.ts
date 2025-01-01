@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import User, { IUser } from "../models/userModel";
 
 const clientId =
-  "640622037841-rmcrulj2s0ecud57vip8rvk9fjrfs225.apps.googleusercontent.com";
+  "797530137615-n0qiu7me2mrsg99defe9ltcbgoo4qb1t.apps.googleusercontent.com";
 const googleClient = new OAuth2Client(clientId);
 
 const getAll = async (req: Request, res: Response) => {

@@ -36,8 +36,7 @@ const LoginForm = () => {
 
   const handleLogin = (e: FormEvent) => {
     e.preventDefault();
-    // dispatch(login(email, password));
-    login(email, password);
+    dispatch(login(email, password) as any);
     setAuthenticatedWithGoogle(false);
   };
 

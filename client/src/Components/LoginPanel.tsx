@@ -11,7 +11,7 @@ import { googleLogin, login } from "../services/userService";
 import { useAuth } from "../Context/AuthContext";
 
 const clientId =
-  "640622037841-rmcrulj2s0ecud57vip8rvk9fjrfs225.apps.googleusercontent.com";
+  "797530137615-n0qiu7me2mrsg99defe9ltcbgoo4qb1t.apps.googleusercontent.com";
 
 const LoginPanel: React.FC = () => {
   const { isAuthenticatedWithGoogle, setAuthenticatedWithGoogle } = useAuth();

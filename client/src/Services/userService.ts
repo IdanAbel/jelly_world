@@ -27,7 +27,6 @@ export const googleLogin = (tokenId) => async (dispatch: any) => {
       },
     };
 
-    // Send the token to your server for verification and JWT generation
     const { data } = await axios.post(
       "/api/users/googleLogin",
       JSON.stringify({ tokenId }),
