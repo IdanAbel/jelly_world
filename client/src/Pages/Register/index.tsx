@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Divider } from '@mui/material';
-import SelfRegister from './components/Register';
+import RegisterForm from './components/RegisterForm.tsx';
 
 const Register: React.FC = () => {
     return (
@@ -13,7 +13,7 @@ const Register: React.FC = () => {
                 gap: '20px',
             }}
         >
-            <SelfRegister />
+            <RegisterForm />
             <Divider sx={{ width: '100%' }} />
         </Box>
     );

@@ -10,7 +10,7 @@ import Message from '../../../Components/Message'; //TODO
 import Loader from '../../../Components/Loader'; //TODO
 import { RootState } from '../../../store'; //TODO
 
-const Register: React.FC = () => {
+const RegisterForm: React.FC = () => {
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -83,4 +83,4 @@ const Register: React.FC = () => {
     );
 };
 
-export default Register;
+export default RegisterForm;

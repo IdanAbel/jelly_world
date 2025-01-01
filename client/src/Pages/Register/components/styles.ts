@@ -22,11 +22,11 @@ const inputContainer = {
 };
 
 const submitButton = {
-  backgroundColor: '#5d7afd',
+  backgroundColor: '#4d7afd',
   color: 'white',
   borderRadius: '10px',
   '&:hover': {
-    backgroundColor: '#274bef',
+    backgroundColor: '#374bef',
   },
 };
 
