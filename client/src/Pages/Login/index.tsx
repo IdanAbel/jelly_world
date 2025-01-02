@@ -1,9 +1,9 @@
 import React from "react";
 import { Box, Divider } from "@mui/material";
-import LoginByGoogle from "../../Components/LoginByGoogle"; //TODO
 import LoginForm from "./components/LoginForm.tsx";
+import LoginPanel from "../../Components/LoginPanel.tsx";
 
-const Login = (): JSX.Element => {
+const Login: React.FC = () => {
   return (
     <Box
       sx={{
@@ -16,7 +16,7 @@ const Login = (): JSX.Element => {
     >
       <LoginForm />
       <Divider sx={{ width: "100%" }} />
-      <LoginByGoogle />
+      <LoginPanel />
     </Box>
   );
 };

@@ -1,11 +1,25 @@
-
 import express from "express";
-const router = express.Router();
-import authController from "../controllers/authController";
+import {
+  login,
+  googleLogin,
+  register,
+  getUserProfile,
+  updateUserProfile,
+  getAll,
+  deleteUser,
+  getById,
+} from "../controllers/authController";
+import { protect } from "../middlewares/authMiddleware";
 
-router.post("/register", authController.register);
-router.post("/login", authController.login);
-router.post("/refresh", authController.refresh);
-router.post("/logout", authController.logout);
+const router = express.Router();
+
+router.get("/", protect, getAll);
+router.get("/:id", getById);
+router.get("/profile", protect, getUserProfile);
+router.post("/", register);
+router.post("/login", protect, login);
+router.post("/googleLogin", googleLogin);
+router.put("/profile", updateUserProfile);
+router.delete("/:id", protect, deleteUser);
 
 export default router;
