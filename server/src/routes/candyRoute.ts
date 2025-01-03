@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import {
   getCandies,
   getCandyById,
@@ -186,7 +186,7 @@ export default router;
  *           format: url
  *         flavor:
  *           type: string
- *         summary:
+ *         description:
  *           type: string
  *         rating:
  *           type: number
@@ -204,7 +204,7 @@ export default router;
  *         - id
  *         - name
  *         - flavor
- *         - summary
+ *         - description
  *         - rating
  *         - stock
  *         - reviews
@@ -217,7 +217,7 @@ export default router;
  *         name: Chocolate Delight
  *         image: "https://example.com/chocolate_delight.jpg"
  *         flavor: Chocolate
- *         summary: "A delicious chocolate candy that melts in your mouth."
+ *         description: "A delicious chocolate candy that melts in your mouth."
  *         rating: 9.5
  *         stock: 120
  *         reviews:
