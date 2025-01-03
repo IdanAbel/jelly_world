@@ -1,32 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CircularProgress, Box, Typography, Checkbox, FormControlLabel, Stack } from '@mui/material';
-import { listJellies } from './JellyActions';
-import JellyFilter from './JellyFilter';
+import { listCandies } from './candyActions';
+import CandyFilter from './candyFilter';
 import { RootState } from '../../../store';
+import React from 'react';
 
-interface JellyListProps {
-    userInfo: { id: string | null } | null;
-}
 
-const JellyList: React.FC<JellyListProps> = ({ userInfo }) => {
+const CandyList = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [isMineJellies, setIsMineJellies] = useState(false);
+    const [isMinecandies, setIsMinecandies] = useState(false);
 
     const dispatch = useDispatch();
-    const { loading, jellies, error } = useSelector((state: RootState) => state.jellyList);
+    const { loading, candies, error } = useSelector((state: RootState) => state.candyList);
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
 
-    // Fetch jellies on component mount
+    // Fetch candies on component mount
     useEffect(() => {
-        dispatch(listJellies());
+        dispatch(listCandies(''));
     }, [dispatch]);
 
-    const filterJellies = () => {
-        return jellies
-            ?.filter((jelly) =>
-                jelly.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filtercandies = () => {
+        return candies
+            ?.filter((candy) =>
+                candy.name.toLowerCase().includes(searchTerm.toLowerCase())
             )
-            ?.filter((jelly) => (isMineJellies ? jelly.createdBy === userInfo?.id : true));
+            ?.filter((candy) => (isMinecandies ? candy.createdBy === userInfo?.id : true));
     };
 
     const handleFilterChange = (term: string) => {
@@ -34,24 +34,24 @@ const JellyList: React.FC<JellyListProps> = ({ userInfo }) => {
     };
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setIsMineJellies(event.target.checked);
+        setIsMinecandies(event.target.checked);
     };
 
-    const filteredJellies = filterJellies();
+    const filteredcandies = filtercandies();
 
     return (
         <Box>
             <Stack direction="row" spacing={2} justifyContent="center">
-                <JellyFilter onFilterChange={handleFilterChange} />
+                <CandyFilter onFilterChange={handleFilterChange} />
                 {userInfo && (
                     <FormControlLabel
                         control={
                             <Checkbox
-                                checked={isMineJellies}
+                                checked={isMinecandies}
                                 onChange={handleCheckboxChange}
                             />
                         }
-                        label="My Jellies"
+                        label="My candies"
                     />
                 )}
             </Stack>
@@ -64,14 +64,14 @@ const JellyList: React.FC<JellyListProps> = ({ userInfo }) => {
                 <Typography color="error">{error}</Typography>
             ) : (
                 <Box>
-                    {filteredJellies?.length > 0 ? (
-                        filteredJellies.map((jelly) => (
-                            <Typography key={jelly.id} variant="h6">
-                                {jelly.name}
+                    {filteredcandies?.length > 0 ? (
+                        filteredcandies.map((candy) => (
+                            <Typography key={candy.id} variant="h6">
+                                {candy.name}
                             </Typography>
                         ))
                     ) : (
-                        <Typography>No jellies found</Typography>
+                        <Typography>No candies found</Typography>
                     )}
                 </Box>
             )}
@@ -79,4 +79,4 @@ const JellyList: React.FC<JellyListProps> = ({ userInfo }) => {
     );
 };
 
-export default JellyList;
+export default CandyList;

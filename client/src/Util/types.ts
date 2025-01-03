@@ -6,7 +6,7 @@ interface Review {
     updatedAt: Date;
 }
 
-export interface Jelly {
+export interface Candy {
     colorGroup: string;
     backgroundColor: string;
     imageUrl: string;

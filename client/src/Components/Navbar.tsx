@@ -66,7 +66,7 @@ const Navbar: React.FC = () => {
       <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <StyledLink to="/">
           <img src="\favicon.ico" alt="Logo" height={40} width={40} />
-          <h1>Jelly World</h1>
+          <h1>Candy World</h1>
         </StyledLink>
       </Box>
       {userInfo ? (

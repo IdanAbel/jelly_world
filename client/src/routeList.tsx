@@ -10,7 +10,7 @@ const RouteList: React.FC = () => (
     <Route path='/login' element={<Login />} />
     <Route path='/register' element={<Register />} />
     <Route path='/profile' element={<Profile />} />
-    <Route path='/' element={<Home />} exact />
+    <Route path='/' element={<Home />} />
   </Routes>
 );
 

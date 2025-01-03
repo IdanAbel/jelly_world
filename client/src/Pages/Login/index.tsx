@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Divider } from "@mui/material";
-import LoginForm from "./components/LoginForm.tsx";
+import LoginForm from "./components/LoginForm";
 import LoginPanel from "../../Components/LoginPanel.tsx";
 
 const Login: React.FC = () => {

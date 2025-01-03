@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { TextField, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import React from 'react';
 
-interface JellyFilterProps {
+interface CandyFilterProps {
     onFilterChange: (searchTerm: string) => void;
 }
 
-const JellyFilter: React.FC<JellyFilterProps> = ({ onFilterChange }) => {
+const CandyFilter: React.FC<CandyFilterProps> = ({ onFilterChange }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
@@ -19,7 +20,7 @@ const JellyFilter: React.FC<JellyFilterProps> = ({ onFilterChange }) => {
 
     return (
         <TextField
-            placeholder="Search Jellies"
+            placeholder="Search candies"
             InputProps={{
                 startAdornment: (
                     <InputAdornment position="start">
@@ -34,4 +35,4 @@ const JellyFilter: React.FC<JellyFilterProps> = ({ onFilterChange }) => {
     );
 };
 
-export default JellyFilter;
+export default CandyFilter;

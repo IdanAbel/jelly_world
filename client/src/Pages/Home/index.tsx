@@ -1,18 +1,14 @@
 import { Typography, Box } from '@mui/material';
-import JellyList from "./components/JellyList.tsx";
+import CandyList from "./components/CandyList.tsx";
+import React from 'react';
 
-interface HomeProps {
-    userInfo: { id: string | null } | null;
-}
-
-const Home: React.FC<HomeProps> = ({ userInfo }) => {
-
+const Home = () => {
     return (
         <Box sx={{ p: 4 }}>
             <Typography variant="h4" align="center" gutterBottom>
-                Welcome to Jelly World
+                Welcome to Candy World
             </Typography>
-            <JellyList userInfo={userInfo} />
+            <CandyList />
         </Box>
     );
 };
