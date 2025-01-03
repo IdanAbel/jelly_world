@@ -75,13 +75,13 @@ const createCandy = customAsyncHandler(async (req: CustomRequest, res: Response)
 
 const updateCandy = customAsyncHandler(async (req: CustomRequest, res: Response) => {
   const {
-    body: { name, summary, image, flavor },
+    body: { name, description, image, flavor },
     params: { id },
   } = req;
 
   const candy = await Candy.findByIdAndUpdate(id, {
     name,
-    summary,
+    description,
     image,
     flavor,
   }, { new: true });

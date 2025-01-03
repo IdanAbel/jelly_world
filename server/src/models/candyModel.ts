@@ -3,10 +3,18 @@ import { ReviewSchema, Review } from './reviewModel';
 import User from './userModel';
 
 export interface Candy extends Document {
-  name: string;
-  image: string;
-  flavor: string;
-  summary: string;
+  beanId: number;
+  groupName: string[];
+  ingredients: string[];
+  flavorName: string;
+  description: string;
+  colorGroup: string;
+  backgroundColor: string;
+  imageUrl: string;
+  glutenFree: boolean;
+  sugarFree: boolean;
+  seasonal: boolean;
+  kosher: boolean;
   rating: number;
   reviewsAmount: number;
   reviews: Review[];
@@ -17,35 +25,69 @@ export interface Candy extends Document {
 
 const CandySchema: Schema = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
+    beanId: {
+      type: Number,
+      required: false,
     },
-    image: {
-      type: String,
-      required: true,
+    groupName: {
+      type: [String],
+      required: false,
     },
-    flavor: {
-      type: String,
-      required: true,
+    ingredients: {
+      type: [String],
+      required: false,
     },
-    summary: {
+    flavorName: {
       type: String,
-      required: true,
+      required: false,
+    },
+    description: {
+      type: String,
+      required: false,
+    },
+    colorGroup: {
+      type: String,
+      required: false,
+    },
+    backgroundColor: {
+      type: String,
+      required: false,
+    },
+    imageUrl: {
+      type: String,
+      required: false,
+    },
+    glutenFree: {
+      type: Boolean,
+      required: false,
+    },
+    sugarFree: {
+      type: Boolean,
+      required: false,
+    },
+    seasonal: {
+      type: Boolean,
+      required: false,
+    },
+    kosher: {
+      type: Boolean,
+      required: false,
     },
     rating: {
       type: Number,
       default: 0,
+      required: false,
     },
     reviewsAmount: {
       type: Number,
-      required: true,
       default: 0,
+      required: false,
     },
     reviews: [ReviewSchema],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: User,
+      required: false,
     },
   },
   {
@@ -53,4 +95,4 @@ const CandySchema: Schema = new Schema(
   }
 );
 
-export default mongoose.model<Candy>('Candy', CandySchema);
+export default mongoose.model<Candy>('Candies', CandySchema);

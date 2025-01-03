@@ -4,13 +4,16 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import express, { Express } from "express";
 import authRoutes from "./routes/authRoute";
+import candyRoute from "./routes/candyRoute";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
+import { errorHandler, notFound } from "./middlewares/errorMiddleware";
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/users", authRoutes);
+app.use("/api/candy", candyRoute);
 
 const options = {
   definition: {
@@ -24,8 +27,12 @@ const options = {
   },
   apis: ["./src/routes/*.ts"],
 };
+
 const specs = swaggerJsDoc(options);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+
+app.use(notFound);
+app.use(errorHandler);
 
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
