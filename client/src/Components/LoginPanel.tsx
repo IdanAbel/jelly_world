@@ -48,8 +48,7 @@ const LoginPanel: React.FC = () => {
       <GoogleLogin
         buttonText="Google Login"
         clientId={clientId}
-        offline={false}
-        onFailure={onFailure}
+          onFailure={onFailure}
         onSuccess={handleLogin}
       />
     </div>
