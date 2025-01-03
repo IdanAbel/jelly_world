@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoute";
 import candyRoute from "./routes/candyRoute";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
+import { errorHandler, notFound } from "./middlewares/errorMiddleware";
 
 const app = express();
 app.use(bodyParser.json());
@@ -29,6 +30,9 @@ const options = {
 
 const specs = swaggerJsDoc(options);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+
+app.use(notFound);
+app.use(errorHandler);
 
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
