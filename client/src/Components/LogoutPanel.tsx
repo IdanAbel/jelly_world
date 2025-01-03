@@ -8,9 +8,9 @@ const clientId =
 const LogoutPanel: React.FC = () => {
   const { isAuthenticatedWithGoogle, setAuthenticatedWithGoogle } = useAuth();
 
-  const onLogoutSuccess = (result: unknown): void => {
+  const onLogoutSuccess = (): void => {
     setAuthenticatedWithGoogle(false);
-    console.log("Logout Success!", result);
+    console.log("Logout Success!");
   };
 
   return (

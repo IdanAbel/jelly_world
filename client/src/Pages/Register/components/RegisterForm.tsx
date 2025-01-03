@@ -14,6 +14,7 @@ import FormContainer from "../../../components/FormContainer";
 //import Message from "../../../Components/Message"; //TODO
 // import Loader from "../../../Components/Loader"; //TODO
 import { RootState } from "../../../store"; //TODO
+import Message from "../../../Components/Message";
 
 const RegisterForm: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -75,10 +76,8 @@ const RegisterForm: React.FC = () => {
         <Button sx={submitButton} onClick={handleRegister}>
           {"Register"}
         </Button>
-        {
-          error && <></> /* <Message variant="alert-danger">{error}</Message>}
-        {message && <Message variant="alert-danger">{message}</Message> */
-        }
+        {error && <Message variant="alert-danger">{error}</Message>}
+        {message && <Message variant="alert-danger">{message}</Message>}
         <Box sx={centeredContainer}>
           <Typography variant="subtitle2">
             {"Already have an account?"}

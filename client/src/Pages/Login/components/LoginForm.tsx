@@ -13,9 +13,9 @@ import { container, inputContainer, submitButton } from "./styles";
 import FormContainer from "../../../components/FormContainer";
 import { login } from "../../../services/userService";
 
-// import Message from "../../../Components/Message"; //TODO
-import { RootState } from "../../../store"; //TODO
+import { RootState } from "../../../store";
 import { useAuth } from "../../../Context/AuthContext";
+import Message from "../../../Components/Message";
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>("");
@@ -78,9 +78,7 @@ const LoginForm = () => {
               <Typography variant="subtitle2">{"Sign Up here"}</Typography>
             </Link>
           </Box>
-          {error && (
-            /* <Message variant="alert-danger">{error}</Message>*/ <></>
-          )}
+          {error && <Message variant="alert-danger">{error}</Message>}
         </Box>
       )}
     </FormContainer>
