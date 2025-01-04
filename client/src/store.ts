@@ -1,6 +1,6 @@
-import { createStore, combineReducers, applyMiddleware, AnyAction } from "redux";
-import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   userDeleteReducer,
   userDetailsReducer,
@@ -8,7 +8,8 @@ import {
   userLoginReducer,
   userRegisterReducer,
   userUpdateProfileReducer,
-} from "./Reducers/userReducers";
+} from './Reducers/userReducers';
+import { candyCreateReducer } from './Reducers/candyReducers';
 
 export interface RootState {
   userLogin: ReturnType<typeof userLoginReducer>;
@@ -17,6 +18,7 @@ export interface RootState {
   userUpdateProfile: ReturnType<typeof userUpdateProfileReducer>;
   userList: ReturnType<typeof userListReducer>;
   userDelete: ReturnType<typeof userDeleteReducer>;
+  candyCreate: ReturnType<typeof candyCreateReducer>;
 }
 
 const reducer = combineReducers({
@@ -26,6 +28,7 @@ const reducer = combineReducers({
   userUpdateProfile: userUpdateProfileReducer,
   userList: userListReducer,
   userDelete: userDeleteReducer,
+  candyCreate: candyCreateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
