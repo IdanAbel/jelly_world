@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CircularProgress, Box, Typography, Checkbox, FormControlLabel, Stack } from '@mui/material';
-import { listCandies } from './candyActions';
-import CandyFilter from './candyFilter';
-import { RootState } from '../../../store';
+import { listCandies } from '../Services/candyServices.tsx';
+import CandyFilter from './candyFilter.tsx';
+import { RootState } from '../store.ts';
 import React from 'react';
 
 

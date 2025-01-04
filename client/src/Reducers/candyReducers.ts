@@ -17,12 +17,12 @@ import {
     CANDY_DELETE_SUCCESS,
     CANDY_DELETE_FAIL,
 } from "../Constants/candyConstants.ts";
-import { Candy } from "../Util/types.ts";
+import { Candy } from "../util/types.ts"
 
 
 interface CandyState {
     loading?: boolean;
-    candy?: Candy;
+    candy?: Candy | undefined;
     error?: string;
     success?: boolean;
 }
@@ -73,7 +73,7 @@ export const candyListReducer = (
 };
 
 export const candyDetailsReducer = (
-    state: CandyState = { candy: {} },
+    state: CandyState = {},
     action: Action
 ): CandyState => {
     switch (action.type) {
@@ -89,7 +89,7 @@ export const candyDetailsReducer = (
 };
 
 export const candyUpdateReducer = (
-    state: CandyState = { candy: {} },
+    state: CandyState = {},
     action: Action
 ): CandyState => {
     switch (action.type) {
@@ -100,7 +100,7 @@ export const candyUpdateReducer = (
         case CANDY_UPDATE_FAIL:
             return { loading: false, error: action.payload };
         case CANDY_UPDATE_RESET:
-            return { candy: {} };
+            return {};
         default:
             return state;
     }

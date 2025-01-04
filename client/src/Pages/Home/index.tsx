@@ -1,5 +1,5 @@
 import { Typography, Box } from '@mui/material';
-import CandyList from "./components/CandyList.tsx";
+import CandyList from "../../Components/candyList.tsx";
 import React from 'react';
 
 const Home = () => {
