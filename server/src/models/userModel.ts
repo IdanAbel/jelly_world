@@ -26,7 +26,7 @@ const UserSchema: Schema<IUser> = new mongoose.Schema(
     },
     image: {
       type: String,
-      default: "/uploads/userImage.png",
+      default: "/assets/userImage.png",
     },
     googleId: {
       type: String,

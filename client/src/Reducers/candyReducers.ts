@@ -1,21 +1,21 @@
 import {
-    CANDY_CREATE_REQUEST,
-    CANDY_CREATE_SUCCESS,
-    CANDY_CREATE_FAIL,
-    CANDY_CREATE_RESET,
-    CANDY_LIST_REQUEST,
-    CANDY_LIST_SUCCESS,
-    CANDY_LIST_FAIL,
-    CANDY_DETAILS_REQUEST,
-    CANDY_DETAILS_SUCCESS,
-    CANDY_DETAILS_FAIL,
-    CANDY_UPDATE_REQUEST,
-    CANDY_UPDATE_SUCCESS,
-    CANDY_UPDATE_FAIL,
-    CANDY_UPDATE_RESET,
-    CANDY_DELETE_REQUEST,
-    CANDY_DELETE_SUCCESS,
-    CANDY_DELETE_FAIL,
+  CANDY_CREATE_REQUEST,
+  CANDY_CREATE_SUCCESS,
+  CANDY_CREATE_FAIL,
+  CANDY_CREATE_RESET,
+  CANDY_LIST_REQUEST,
+  CANDY_LIST_SUCCESS,
+  CANDY_LIST_FAIL,
+  CANDY_DETAILS_REQUEST,
+  CANDY_DETAILS_SUCCESS,
+  CANDY_DETAILS_FAIL,
+  CANDY_UPDATE_REQUEST,
+  CANDY_UPDATE_SUCCESS,
+  CANDY_UPDATE_FAIL,
+  CANDY_UPDATE_RESET,
+  CANDY_DELETE_REQUEST,
+  CANDY_DELETE_SUCCESS,
+  CANDY_DELETE_FAIL,
 } from "../Constants/candyConstants.ts";
 import { Candy } from "../util/types.ts"
 
@@ -73,8 +73,8 @@ export const candyListReducer = (
 };
 
 export const candyDetailsReducer = (
-    state: CandyState = {},
-    action: Action
+  state: CandyState = {},
+  action: Action
 ): CandyState => {
     switch (action.type) {
         case CANDY_DETAILS_REQUEST:
@@ -89,8 +89,8 @@ export const candyDetailsReducer = (
 };
 
 export const candyUpdateReducer = (
-    state: CandyState = {},
-    action: Action
+  state: CandyState = {},
+  action: Action
 ): CandyState => {
     switch (action.type) {
         case CANDY_UPDATE_REQUEST:

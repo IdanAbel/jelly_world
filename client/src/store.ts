@@ -1,6 +1,11 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import {
+  createStore,
+  combineReducers,
+  applyMiddleware,
+  AnyAction,
+} from "redux";
+import thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
 import {
   userDeleteReducer,
   userDetailsReducer,
@@ -8,8 +13,14 @@ import {
   userLoginReducer,
   userRegisterReducer,
   userUpdateProfileReducer,
-} from './Reducers/userReducers';
-import { candyCreateReducer } from './Reducers/candyReducers';
+} from "./Reducers/userReducers";
+import {
+  candyCreateReducer,
+  candyDeleteReducer,
+  candyDetailsReducer,
+  candyListReducer,
+  candyUpdateReducer,
+} from "./Reducers/candyReducers";
 
 export interface RootState {
   userLogin: ReturnType<typeof userLoginReducer>;
@@ -18,7 +29,11 @@ export interface RootState {
   userUpdateProfile: ReturnType<typeof userUpdateProfileReducer>;
   userList: ReturnType<typeof userListReducer>;
   userDelete: ReturnType<typeof userDeleteReducer>;
+  candyList: ReturnType<typeof candyListReducer>;
+  candyDetails: ReturnType<typeof candyDetailsReducer>;
+  candyDelete: ReturnType<typeof candyDeleteReducer>;
   candyCreate: ReturnType<typeof candyCreateReducer>;
+  candyUpdate: ReturnType<typeof candyUpdateReducer>;
 }
 
 const reducer = combineReducers({
@@ -28,7 +43,11 @@ const reducer = combineReducers({
   userUpdateProfile: userUpdateProfileReducer,
   userList: userListReducer,
   userDelete: userDeleteReducer,
+  candyList: candyListReducer,
+  candyDetails: candyDetailsReducer,
+  candyDelete: candyDeleteReducer,
   candyCreate: candyCreateReducer,
+  candyUpdate: candyUpdateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
@@ -44,7 +63,7 @@ const middleware = [thunk];
 const store = createStore(
   reducer,
   initialState,
-  composeWithDevTools(applyMiddleware(...middleware as any))
+  composeWithDevTools(applyMiddleware(...(middleware as any)))
 );
 
 export default store;
