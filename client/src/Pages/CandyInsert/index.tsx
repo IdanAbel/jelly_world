@@ -73,7 +73,7 @@ const CandyInsert = () => {
     };
 
     const handleSubmit = () => {
-        dispatch(createCandy(inputs));
+        dispatch(createCandy(inputs as any, true) as any); //TODO: IMPLEMENT TRUE
     };
 
     useEffect(() => {

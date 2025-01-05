@@ -9,6 +9,7 @@
   import swaggerJsDoc from "swagger-jsdoc";
   import swaggerUI from "swagger-ui-express";
   import { errorHandler, notFound } from "./middlewares/errorMiddleware";
+  import uploadRoutes from "./routes/uploadRoutes";
 
   const app = express();
   app.use(bodyParser.json());
@@ -16,6 +17,7 @@
   app.use("/api/users", authRoutes);
   app.use("/api/candy", candyRoute);
   app.use("/api/messages", messageRoute);
+  app.use("/api/uploads", uploadRoutes);
 
   const options = {
     definition: {
