@@ -8,7 +8,9 @@ interface CandyFilterProps {
 
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { CANDY_LIST_REQUEST, CANDY_LIST_SUCCESS, CANDY_LIST_FAIL } from '../../../Constants/candyConstants';
+import { CANDY_LIST_REQUEST, CANDY_LIST_SUCCESS, CANDY_LIST_FAIL } from '../Constants/candyConstants.ts';
+import {Candy} from "../Util/types.ts";
+import {RootState} from "../store.ts";
 
 export const listCandies = (
   keyword: string = '',
@@ -22,7 +24,7 @@ export const listCandies = (
       const searchRating = rating === 'all' ? '' : rating;
 
       const { data } = await axios.get(
-        `/api/candies?keyword=${searchKeyword}&rating=${searchRating}`
+        `/api/candy?keyword=${searchKeyword}&rating=${searchRating}`
       );
 
       dispatch({ type: CANDY_LIST_SUCCESS, payload: data });
@@ -37,32 +39,6 @@ export const listCandies = (
     }
   };
 
-const CandyFilter: React.FC<CandyFilterProps> = ({ onFilterChange }) => {
-    const [searchTerm, setSearchTerm] = useState('');
-
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            onFilterChange(searchTerm);
-        }, 300);
-
-        return () => clearTimeout(handler);
-    }, [searchTerm, onFilterChange]);
-
-    return (
-        <TextField
-            placeholder="Search candies"
-            InputProps={{
-                startAdornment: (
-                    <InputAdornment position="start">
-                        <SearchIcon />
-                    </InputAdornment>
-                ),
-            }}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            fullWidth
-        />
-    );
-};
-
-export default CandyFilter;
+export const createCandy = (candy: Candy) => async (dispatch: Dispatch, getState: () => RootState) => {{
+    // TODO: create candy
+}};
