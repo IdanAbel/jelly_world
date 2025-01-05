@@ -24,7 +24,7 @@ export const listCandies = (
       const searchRating = rating === 'all' ? '' : rating;
 
       const { data } = await axios.get(
-        `/api/candies?keyword=${searchKeyword}&rating=${searchRating}`
+        `/api/candy?keyword=${searchKeyword}&rating=${searchRating}`
       );
 
       dispatch({ type: CANDY_LIST_SUCCESS, payload: data });

@@ -8,10 +8,10 @@ import {
     FormControlLabel,
     Stack,
 } from "@mui/material";
-import { listCandies } from "./candyActions";
 import CandyFilter from "./candyFilter";
-import { RootState } from "../../../store";
 import React from "react";
+import {listCandies} from "../Services/candyServices.ts";
+import {RootState} from "../store.ts";
 
 const CandyList = () => {
     const [searchTerm, setSearchTerm] = useState("");
