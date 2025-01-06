@@ -19,7 +19,8 @@ import { Candy } from '../../Util/types.ts';
 import CandyTypeSelect from '../../Components/CandyGenersSelect.tsx';
 import ImageInput from '../../Components/ImageInput.tsx';
 import Loader from '../../Components/Loader.tsx';
-import {createCandy} from "../../Services/candyServices.ts";
+import { createCandy } from "../../Services/candyServices.ts";
+import React from 'react';
 
 const CandyInsert = () => {
     const dispatch = useDispatch();
@@ -62,15 +63,12 @@ const CandyInsert = () => {
         setInputs({ ...inputs, [fieldName]: event.target.value });
     };
 
-    const handleImageChange = (image: File) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setInputs({ ...inputs, imageUrl: reader.result as string });
-        };
-        if (image) {
-            reader.readAsDataURL(image);
+    const handleImageChange = (file: File | null) => {
+        if (file) {
+            setInputs({ ...inputs, imageUrl: file });
         }
     };
+
 
     const handleSubmit = () => {
         dispatch(createCandy(inputs as any, true) as any); //TODO: IMPLEMENT TRUE

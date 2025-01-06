@@ -9,7 +9,7 @@ interface Review {
 export interface Candy {
     colorGroup: string;
     backgroundColor: string;
-    imageUrl: string;
+    imageUrl: File;
     glutenFree: boolean;
     sugarFree: boolean;
     seasonal: boolean;
