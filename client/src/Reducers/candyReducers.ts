@@ -64,7 +64,7 @@ export const candyListReducer = (
         case CANDY_LIST_REQUEST:
             return { loading: true, candies: [] };
         case CANDY_LIST_SUCCESS:
-            return { loading: false, candies: action.payload };
+            return { loading: false, candies: action.payload.candies };
         case CANDY_LIST_FAIL:
             return { loading: false, error: action.payload, candies: [] };
         default:
