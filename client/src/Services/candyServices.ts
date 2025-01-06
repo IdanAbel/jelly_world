@@ -11,35 +11,35 @@ import {
     CANDY_UPDATE_SUCCESS,
     CANDY_UPDATE_FAIL
 } from '../Constants/candyConstants.ts';
-import {Candy} from "../Util/types.ts";
-import {RootState} from "../store.ts";
+import { Candy } from "../Util/types.ts";
+import { RootState } from "../store.ts";
 
 export const listCandies = (
-  keyword: string = '',
-  maxPrice: number = 10000000,
-  rating: string = ''
+    keyword: string = '',
+    maxPrice: number = 10000000,
+    rating: string = ''
 ) =>
-  async (dispatch: Dispatch) => {
-    try {
-      dispatch({ type: CANDY_LIST_REQUEST });
-      const searchKeyword = keyword === 'all' ? '' : keyword;
-      const searchRating = rating === 'all' ? '' : rating;
+    async (dispatch: Dispatch) => {
+        try {
+            dispatch({ type: CANDY_LIST_REQUEST });
+            const searchKeyword = keyword === 'all' ? '' : keyword;
+            const searchRating = rating === 'all' ? '' : rating;
 
-      const { data } = await axios.get(
-        `/api/candy?keyword=${searchKeyword}&rating=${searchRating}`
-      );
+            const { data } = await axios.get(
+                `/api/candy?keyword=${searchKeyword}&rating=${searchRating}`
+            );
 
-      dispatch({ type: CANDY_LIST_SUCCESS, payload: data });
-    } catch (error: any) {
-      dispatch({
-        type: CANDY_LIST_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+            dispatch({ type: CANDY_LIST_SUCCESS, payload: data });
+        } catch (error: any) {
+            dispatch({
+                type: CANDY_LIST_FAIL,
+                payload:
+                    error.response && error.response.data.message
+                        ? error.response.data.message
+                        : error.message,
+            });
+        }
+    };
 
 export const createCandy =
     (candy: Candy, isAuthenticatedWithGoogle: boolean) =>
