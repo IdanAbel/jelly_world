@@ -10,7 +10,7 @@ export interface Candy extends Document {
   description: string;
   colorGroup: string;
   backgroundColor: string;
-  imageUrl: string;
+  image: string;
   glutenFree: boolean;
   sugarFree: boolean;
   seasonal: boolean;
@@ -53,7 +53,7 @@ const CandySchema: Schema = new Schema(
       type: String,
       required: false,
     },
-    imageUrl: {
+    image: {
       type: String,
       required: false,
     },

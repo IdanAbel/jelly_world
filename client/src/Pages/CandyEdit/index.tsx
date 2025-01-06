@@ -39,7 +39,7 @@ const CandyEdit: React.FC<CandyEditProps> = ({isOpen, candy, close, setCandyIdTo
 
     const handleImageChange = (file: File | null) => {
         if(file){
-            setInputs({...inputs, imageUrl: file});
+            setInputs({...inputs, image: file});
         }
     };
 
@@ -170,7 +170,7 @@ const CandyEdit: React.FC<CandyEditProps> = ({isOpen, candy, close, setCandyIdTo
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <ImageInput onChange={handleImageChange} initialImage={inputs.imageUrl}/>
+                            <ImageInput onChange={handleImageChange} initialImage={inputs.image}/>
                         </Grid>
                         <Grid item xs={12}>
                             <Button variant="contained" color="primary" onClick={handleSubmit}>

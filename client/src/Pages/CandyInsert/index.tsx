@@ -46,7 +46,7 @@ const CandyInsert = () => {
         reviewsAmount: 0,
         createdBy: '',
         backgroundColor: '',
-        imageUrl: '',
+        image: undefined,
     });
 
     const {
@@ -65,7 +65,7 @@ const CandyInsert = () => {
 
     const handleImageChange = (file: File | null) => {
         if (file) {
-            setInputs({ ...inputs, imageUrl: file });
+            setInputs({ ...inputs, image: file });
         }
     };
 

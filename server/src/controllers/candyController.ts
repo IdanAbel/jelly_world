@@ -7,19 +7,19 @@ import mongoose from 'mongoose';
 const getCandies = customAsyncHandler(async (req: CustomRequest, res: Response) => {
   const keyword = req.query.keyword
     ? {
-        name: {
-          $regex: req.query.keyword as string,
-          $options: 'i',
-        },
-      }
+      name: {
+        $regex: req.query.keyword as string,
+        $options: 'i',
+      },
+    }
     : {};
 
   const rating = req.query.rating
     ? {
-        rating: {
-          $eq: Number(req.query.rating),
-        },
-      }
+      rating: {
+        $eq: Number(req.query.rating),
+      },
+    }
     : {};
 
   const count = await Candy.countDocuments({
@@ -66,7 +66,7 @@ const deleteCandy = customAsyncHandler(async (req: CustomRequest, res: Response)
 
 const createCandy = customAsyncHandler(async (req: CustomRequest, res: Response) => {
   const { body, user } = req;
-
+  
   const candy = new Candy({ ...body, createdBy: user._id });
   const createdCandy = await candy.save();
 
@@ -106,7 +106,7 @@ const createCandyReview = customAsyncHandler(async (req: CustomRequest, res: Res
       //   name: req.user.name,
       rating: Number(rating),
       comment,
-      user: new mongoose.Types.ObjectId(req.user._id), 
+      user: new mongoose.Types.ObjectId(req.user._id),
     });
 
     candy.reviews.push(review);
