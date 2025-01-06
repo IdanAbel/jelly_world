@@ -85,7 +85,7 @@ const createCandy = customAsyncHandler(
   async (req: CustomRequest, res: Response) => {
     const { body, user } = req;
 
-    const candy = new Candy({ ...body, createdBy: user._id });
+    const candy = new Candy({ ...body, createdBy: user?._id });
     const createdCandy = await candy.save();
 
     res.status(201).json(createdCandy);
@@ -132,7 +132,7 @@ const createCandyReview = customAsyncHandler(
         //   name: req.user.name,
         rating: Number(rating),
         comment,
-        user: new mongoose.Types.ObjectId(req.user._id),
+        user: new mongoose.Types.ObjectId(req.user!._id as number),
       });
 
       candy.reviews.push(review);

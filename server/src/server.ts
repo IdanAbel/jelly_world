@@ -1,6 +1,6 @@
   import dotenv from "dotenv";
   dotenv.config();
-  import path from 'path';
+  import { dirname, join } from 'path';
   import mongoose from "mongoose";
   import bodyParser from "body-parser";
   import express, { Express } from "express";
@@ -20,9 +20,9 @@
   app.use("/api/messages", messageRoute);
   app.use("/api/upload", uploadRoutes);
 
-  const dirname = path.resolve();
-  app.use('/assets', express.static(path.join(dirname, '/assets')));
+  app.use('/assets', express.static(join(__dirname, '/assets')));
 
+  app.use(express.static(join(__dirname, 'dist')));
 
   const options = {
     definition: {
