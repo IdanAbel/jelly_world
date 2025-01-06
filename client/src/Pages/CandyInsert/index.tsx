@@ -20,6 +20,7 @@ import CandyTypeSelect from '../../Components/CandyGenersSelect.tsx';
 import ImageInput from '../../Components/ImageInput.tsx';
 import Loader from '../../Components/Loader.tsx';
 import {createCandy} from "../../Services/candyServices.ts";
+import React from 'react';
 
 const CandyInsert = () => {
     const dispatch = useDispatch();

@@ -9,6 +9,7 @@ import {CANDY_UPDATE_RESET} from "../../Constants/candyConstants.ts";
 import {Message} from "@mui/icons-material";
 import Loader from "../../Components/Loader.tsx";
 import ImageInput from "../../Components/ImageInput.tsx";
+import React from 'react';
 
 interface CandyEditProps {
     isOpen: boolean;

@@ -45,7 +45,7 @@ const StyledLink = styled(Link)`
   gap: 20px;
 `;
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userLogin = useSelector((state: RootState) => state.userLogin);
