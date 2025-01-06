@@ -18,6 +18,7 @@ import {
   candyCreateReducer,
   candyDeleteReducer,
   candyDetailsReducer,
+  candyExampleListReducer,
   candyListReducer,
   candyUpdateReducer,
 } from "./Reducers/candyReducers";
@@ -34,6 +35,7 @@ export interface RootState {
   candyDelete: ReturnType<typeof candyDeleteReducer>;
   candyCreate: ReturnType<typeof candyCreateReducer>;
   candyUpdate: ReturnType<typeof candyUpdateReducer>;
+  candyExampleList: ReturnType<typeof candyExampleListReducer>;
 }
 
 const reducer = combineReducers({
@@ -48,6 +50,7 @@ const reducer = combineReducers({
   candyDelete: candyDeleteReducer,
   candyCreate: candyCreateReducer,
   candyUpdate: candyUpdateReducer,
+  candyExampleList: candyExampleListReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

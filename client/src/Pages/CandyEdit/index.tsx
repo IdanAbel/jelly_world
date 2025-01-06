@@ -11,10 +11,10 @@ import Loader from "../../Components/Loader.tsx";
 import ImageInput from "../../Components/ImageInput.tsx";
 
 interface CandyEditProps {
-    isOpen: boolean;
-    candy: Candy;
-    close: () => void;
-    setCandyIdToUpdate: () => void;
+    isOpen?: boolean;
+    candy?: Candy;
+    close?: () => void;
+    setCandyIdToUpdate?: () => void;
 }
 
 const CandyEdit: React.FC<CandyEditProps> = ({isOpen, candy, close, setCandyIdToUpdate}) => {

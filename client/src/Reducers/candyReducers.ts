@@ -16,6 +16,9 @@ import {
   CANDY_DELETE_REQUEST,
   CANDY_DELETE_SUCCESS,
   CANDY_DELETE_FAIL,
+  CANDY_EXAMPLE_LIST_FAIL,
+  CANDY_EXAMPLE_LIST_SUCCESS,
+  CANDY_EXAMPLE_LIST_REQUEST,
 } from "../Constants/candyConstants.ts";
 import { Candy } from "../util/types.ts"
 
@@ -66,6 +69,22 @@ export const candyListReducer = (
         case CANDY_LIST_SUCCESS:
             return { loading: false, candies: action.payload.candies };
         case CANDY_LIST_FAIL:
+            return { loading: false, error: action.payload, candies: [] };
+        default:
+            return state;
+    }
+};
+
+export const candyExampleListReducer = (
+    state: CandyListState = { candies: [] },
+    action: Action
+): CandyListState => {
+    switch (action.type) {
+        case CANDY_EXAMPLE_LIST_REQUEST:
+            return { loading: true, candies: [] };
+        case CANDY_EXAMPLE_LIST_SUCCESS:
+            return { loading: false, candies: action.payload };
+        case CANDY_EXAMPLE_LIST_FAIL:
             return { loading: false, error: action.payload, candies: [] };
         default:
             return state;

@@ -7,11 +7,13 @@ import {
   updateCandy,
   createCandyReview,
   getTopCandies,
+  getExampleCandies,
 } from "../controllers/candyController";
 import { protect } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
+router.get("/example", getExampleCandies);
 router.get("/", getCandies);
 router.post("/", protect, createCandy);
 router.post("/:id/reviews", protect, createCandyReview);

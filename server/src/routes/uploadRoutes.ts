@@ -5,7 +5,7 @@ import multer, { FileFilterCallback } from 'multer';
 
 const router = express.Router();
 
-const uploadsDirectory = join(__dirname, '../../uploads');
+const uploadsDirectory = join(__dirname, '../../assets');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -40,8 +40,8 @@ router.post('/', upload.single('image'), (req: Request, res: Response, next: Nex
         const uploadedFile = req.file;
         console.log('Uploaded file details:', uploadedFile);
 
-        const relativePath = uploadedFile.path.replace(/\\/g, '/').split('/uploads/')[1];
-        res.status(200).send(`/uploads/${relativePath}`);
+        const relativePath = uploadedFile.path.replace(/\\/g, '/').split('/assets/')[1];
+        res.status(200).send(`/assets/${relativePath}`);
     } catch (error) {
         next(error);
     }
