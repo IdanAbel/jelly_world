@@ -15,18 +15,19 @@ import {
   Chip,
 } from "@mui/material";
 
-import Message from "../../components/Message";
-import { CANDY_CREATE_RESET } from "../../constants/candyConstants";
-import { Candy } from "../../Util/types.ts";
-import CandyTypeSelect from "../../Components/CandyGenersSelect.tsx";
-import ImageInput from "../../Components/ImageInput.tsx";
-import Loader from "../../Components/Loader.tsx";
+
 import {
   createCandy,
   listExampleCandies,
 } from "../../Services/candyServices.ts";
-import React from "react";
 import { RootState } from "../../store.ts";
+import Message from '../../components/Message';
+import { CANDY_CREATE_RESET } from '../../constants/candyConstants';
+import { Candy } from '../../Util/types.ts';
+import CandyTypeSelect from '../../Components/CandyGenersSelect.tsx';
+import ImageInput from '../../Components/ImageInput.tsx';
+import Loader from '../../Components/Loader.tsx';
+import React from 'react';
 
 const CandyInsert = () => {
   const dispatch = useDispatch();
