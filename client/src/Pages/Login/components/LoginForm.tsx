@@ -38,6 +38,7 @@ const LoginForm = () => {
     e.preventDefault();
     dispatch(login(email, password) as any);
     setAuthenticatedWithGoogle(false);
+    navigate("/");
   };
 
   return (
