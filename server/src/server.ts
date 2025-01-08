@@ -11,6 +11,7 @@
   import swaggerUI from "swagger-ui-express";
   import { errorHandler, notFound } from "./middlewares/errorMiddleware";
   import uploadRoutes from "./routes/uploadRoutes";
+  import chatBotRoute from "./routes/chatBotRoute";
 
   const app = express();
   app.use(bodyParser.json());
@@ -19,6 +20,7 @@
   app.use("/api/candy", candyRoute);
   app.use("/api/messages", messageRoute);
   app.use("/api/upload", uploadRoutes);
+  app.use("/api/chatbot", chatBotRoute);
 
   app.use('/assets', express.static(join(__dirname, '/assets')));
 
