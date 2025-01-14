@@ -12,6 +12,7 @@ import CandyFilter from "./candyFilter";
 import React from "react";
 import { listCandies } from "../Services/candyServices.ts";
 import { RootState } from "../store.ts";
+import Candy from "./candy.tsx";
 
 const CandyList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -79,12 +80,19 @@ const CandyList = () => {
       ) : error ? (
         <Typography color="error">{error}</Typography>
       ) : (
-        <Box>
+        <Box
+          sx={{
+            maxHeight: "80vh",
+            overflowY: "auto",
+            padding: 2,
+            backgroundColor: "#f9f9f9",
+            borderRadius: 3,
+          }}
+        >
+          {" "}
           {filteredcandies && filteredcandies?.length > 0 ? (
             filteredcandies.map((candy, index) => (
-              <Typography key={index} variant="h6">
-                {candy.flavorName}
-              </Typography>
+              <Candy key={index} candy={candy} />
             ))
           ) : (
             <Typography>No candies found</Typography>

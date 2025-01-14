@@ -1,28 +1,34 @@
-  import dotenv from "dotenv";
-  dotenv.config();
-  import { dirname, join } from 'path';
-  import mongoose from "mongoose";
-  import bodyParser from "body-parser";
-  import express, { Express } from "express";
-  import authRoutes from "./routes/authRoute";
-  import candyRoute from "./routes/candyRoute";
-  import messageRoute from "./routes/messageRoute";
-  import swaggerJsDoc from "swagger-jsdoc";
-  import swaggerUI from "swagger-ui-express";
-  import { errorHandler, notFound } from "./middlewares/errorMiddleware";
-  import uploadRoutes from "./routes/uploadRoutes";
+import dotenv from "dotenv";
+dotenv.config();
+import { dirname, join } from "path";
+import mongoose from "mongoose";
+import bodyParser from "body-parser";
+import express, { Express } from "express";
+import authRoutes from "./routes/authRoute";
+import candyRoute from "./routes/candyRoute";
+import messageRoute from "./routes/messageRoute";
+import swaggerJsDoc from "swagger-jsdoc";
+import cors from "cors";
+import swaggerUI from "swagger-ui-express";
+import { errorHandler, notFound } from "./middlewares/errorMiddleware";
+import uploadRoutes from "./routes/uploadRoutes";
 
-  const app = express();
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use("/api/users", authRoutes);
-  app.use("/api/candy", candyRoute);
-  app.use("/api/messages", messageRoute);
-  app.use("/api/upload", uploadRoutes);
+const app = express();
 
-  app.use('/assets', express.static(join(__dirname, '/assets')));
+app.use(cors());
+app.use(express.json());
 
-  app.use(express.static(join(__dirname, 'dist')));
+app.use("/api/users", authRoutes);
+app.use("/api/candy", candyRoute);
+app.use("/api/messages", messageRoute);
+app.use("/api/upload", uploadRoutes);
+app.use("/assets", express.static(join(__dirname, "/assets")));
+
+app.use(express.static(join(__dirname, "dist")));
+
+app.get('/*', (req, res) => {
+  res.sendFile(join(__dirname, 'dist', 'index.html'));
+});
 
 const options = {
   definition: {
