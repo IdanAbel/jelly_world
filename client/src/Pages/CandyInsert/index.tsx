@@ -37,9 +37,20 @@ const CandyInsert = () => {
     (state: RootState) => state.candyExampleList
   );
 
-  useEffect(() => {
-    dispatch(listExampleCandies() as any);
-  }, [dispatch]);
+  const [inputs, setInputs] = useState<Partial<Candy>>({
+    flavorName: '',
+    description: '',
+    groupName: [],
+    glutenFree: false,
+    sugarFree: false,
+    seasonal: false,
+    kosher: false,
+    rating: 0,
+    reviewsAmount: 0,
+    createdBy: '',
+    backgroundColor: '',
+    image: undefined,
+  });
 
   const candyCreate = useSelector((state: any) => state.candyCreate);
   const {
@@ -49,20 +60,9 @@ const CandyInsert = () => {
     candy: createdCandy,
   } = candyCreate;
 
-  const [inputs, setInputs] = useState<Partial<Candy>>({
-    flavorName: "",
-    description: "",
-    groupName: [],
-    glutenFree: false,
-    sugarFree: false,
-    seasonal: false,
-    kosher: false,
-    rating: 0,
-    reviewsAmount: 0,
-    createdBy: "",
-    backgroundColor: "",
-    imageUrl: "",
-  });
+  useEffect(() => {
+    dispatch(listExampleCandies() as any);
+  }, [dispatch]);
 
   const {
     flavorName,
@@ -81,13 +81,9 @@ const CandyInsert = () => {
     setInputs({ ...inputs, [fieldName]: event.target.value });
   };
 
-  const handleImageChange = (image: File) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setInputs({ ...inputs, imageUrl: reader.result as string });
-    };
-    if (image) {
-      reader.readAsDataURL(image);
+  const handleImageChange = (file: File | null) => {
+    if (file) {
+      setInputs({ ...inputs, image: file });
     }
   };
 
@@ -172,7 +168,7 @@ const CandyInsert = () => {
                       <Typography>No candies found</Typography>
                     )}
                   </Container>
-                </Container>    
+                </Container>
               </>
             )}
             <Grid item xs={12}>

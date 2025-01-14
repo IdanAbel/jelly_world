@@ -69,16 +69,15 @@ export const createCandy =
 
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
-      const formData = new FormData();
-      formData.append("image", candy.imageUrl); // Assuming imageUrl contains the file or file path
+                const formData = new FormData();
+                formData.append('image', candy.image); // Assuming image contains the file or file path
 
-      const response = await axios.post("/api/upload", formData, config);
-
-      const candyWithImage = {
-        ...candy,
-        imageUrl: response.data,
-        isAuthenticatedWithGoogle,
-      };
+                const response = await axios.post('/api/upload', formData, config);
+                const candyWithImage = {
+                    ...candy,
+                    image: response.data,
+                    isAuthenticatedWithGoogle,
+                };
 
       const { data } = await axios.post(`/api/candy`, candyWithImage, config);
 
