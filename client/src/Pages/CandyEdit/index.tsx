@@ -12,10 +12,10 @@ import ImageInput from "../../Components/ImageInput.tsx";
 import React from 'react';
 
 interface CandyEditProps {
-    isOpen: boolean;
-    candy: Candy;
-    close: () => void;
-    setCandyIdToUpdate: () => void;
+    isOpen?: boolean;
+    candy?: Candy;
+    close?: () => void;
+    setCandyIdToUpdate?: () => void;
 }
 
 const CandyEdit: React.FC<CandyEditProps> = ({isOpen, candy, close, setCandyIdToUpdate}) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Divider } from '@mui/material';
-import RegisterForm from './components/RegisterForm.tsx';
+import RegisterForm from './components/RegisterForm';
 
 const Register: React.FC = () => {
     return (

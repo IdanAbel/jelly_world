@@ -2,9 +2,10 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import { Request, Response, NextFunction } from "express";
 import User from "../models/userModel";
+import { CustomRequest } from "../common/customTypes";
 
 export const protect = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: CustomRequest, res: Response, next: NextFunction) => {
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
@@ -14,9 +15,9 @@ export const protect = asyncHandler(
         const decoded: any = jwt.verify(token, process.env.TOKEN_SECRET!);
 
         if (!req.body.isAuthenticatedWithGoogle) {
-          req.body = await User.findById(decoded.user?._id).select("-password");
+          req.user = await User.findById(decoded.user?._id).select("-password");
         } else {
-          req.body = await User.findOne({ googleId: decoded.googleUserId });
+          req.user = await User.findOne({ googleId: decoded.googleUserId }) || undefined;
         }
 
         next();
