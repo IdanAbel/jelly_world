@@ -19,6 +19,10 @@ import {
   CANDY_EXAMPLE_LIST_FAIL,
   CANDY_EXAMPLE_LIST_SUCCESS,
   CANDY_EXAMPLE_LIST_REQUEST,
+  CANDY_CREATE_REVIEW_REQUEST,
+  CANDY_CREATE_REVIEW_SUCCESS,
+  CANDY_CREATE_REVIEW_FAIL,
+  CANDY_CREATE_REVIEW_RESET,
 } from "../Constants/candyConstants.ts";
 import { Candy } from "../util/types.ts"
 
@@ -140,3 +144,18 @@ export const candyDeleteReducer = (
             return state;
     }
 };
+
+export const candyCreateReviewReducer = (state = {}, action) => {
+    switch (action.type) {
+      case CANDY_CREATE_REVIEW_REQUEST:
+        return { loading: true };
+      case CANDY_CREATE_REVIEW_SUCCESS:
+        return { loading: false, success: true };
+      case CANDY_CREATE_REVIEW_FAIL:
+        return { loading: false, error: action.payload };
+      case CANDY_CREATE_REVIEW_RESET:
+        return {};
+      default:
+        return state;
+    }
+  };
