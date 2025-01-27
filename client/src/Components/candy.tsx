@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -9,9 +9,36 @@ import {
   Box,
   Grid,
   Rating,
+  TextField,
+  Button,
+  Collapse,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
+import { createCandyReview } from '../Services/candyServices';
 
 const Candy: React.FC<{ candy: any }> = ({ candy }) => {
+  const [reviews, setReviews] = useState(candy.reviews || []);
+  const [rating, setRating] = useState<number | null>(null);
+  const [comment, setComment] = useState("");
+  const [showReviews, setShowReviews] = useState(false);
+  const userLogin = useSelector((state: RootState) => state.userLogin);
+  const { userInfo } = userLogin;
+  const dispatch = useDispatch();
+
+  const handleAddReview = () => {
+    if (rating && comment.trim()) {
+      const newReview = { rating, comment };
+      dispatch(createCandyReview(candy._id as any, newReview as any, true) as any);
+      setReviews((prev) => [...prev, newReview]);
+      setRating(null);
+      setComment("");
+    }
+  };
+
   return (
     <Card
       sx={{
@@ -100,6 +127,65 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
               ({candy.reviewsAmount} reviews)
             </Typography>
           </Stack>
+        </Box>
+
+        {userInfo && <Box mt={4}>
+          <Typography variant="h6" gutterBottom>
+            Add a Review
+          </Typography>
+          <Stack spacing={2}>
+            <Rating
+              name="rating"
+              value={rating}
+              onChange={(event, newValue) => setRating(newValue)}
+              max={10}
+            />
+            <TextField
+              label="Comment"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={2}
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddReview}
+              disabled={!rating || !comment.trim()}
+            >
+              Submit Review
+            </Button>
+          </Stack>
+        </Box>}
+
+        <Box mt={4}>
+          <Button
+            variant="text"
+            color="primary"
+            onClick={() => setShowReviews((prev) => !prev)}
+          >
+            {showReviews ? "Hide Reviews" : "Show  All Reviews"}
+          </Button>
+          <Collapse in={showReviews}>
+            <List>
+              {reviews.length > 0 ? (
+                reviews.map((review, index) => (
+                  <ListItem key={index}>
+                    <ListItemText
+                      primary={`Rating: ${review.rating}/10`}
+                      secondary={review.comment}
+                    />
+                  </ListItem>
+                ))
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  No reviews yet.
+                </Typography>
+              )}
+            </List>
+          </Collapse>
         </Box>
       </CardContent>
     </Card>
