@@ -8,7 +8,7 @@ interface ImageInputProps {
 
 const ImageInput: React.FC<ImageInputProps> = ({ onChange, initialImage = null }) => {
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
+        const file = event.target.files?.[0] || null;
         if (file && file.type.startsWith('image/')) {
             onChange(file);
         } else {
