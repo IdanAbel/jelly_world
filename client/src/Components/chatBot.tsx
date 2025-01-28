@@ -38,9 +38,8 @@ const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, handleCloseChat, candies 
         try {
             const response = await axios.post("/api/chatbot/recommended", {
                 prompt: userInput,
-                candies: ["vanil","shoko"],
+                candies: candies.candies,
             });
-
             setRecommendations(response.data.recommendations);
         } catch (error) {
             console.error("Error fetching recommendations:", error);
