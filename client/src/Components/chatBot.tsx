@@ -11,10 +11,12 @@ import {
     List,
     ListItem,
     ListItemText,
+    CircularProgress,
+    Chip,
 } from "@mui/material";
 
 import axios from "axios";
-import {Candy} from "../Util/types.ts";
+import { Candy } from "../Util/types";
 
 interface ChatBotProps {
     isChatOpen: boolean;
@@ -64,30 +66,90 @@ const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, handleCloseChat, candies 
                     onChange={handleUserInputChange}
                     disabled={isLoading}
                 />
-                {isLoading && (
-                    <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
-                        Thinking...
-                    </Typography>
-                )}
-                {recommendations.length > 0 && (
+                {isLoading ? (
+                    <Box sx={{ textAlign: "center", mt: 2 }}>
+                        <CircularProgress />
+                        <Typography variant="body2" color="textSecondary">
+                            Thinking...
+                        </Typography>
+                    </Box>
+                ) : recommendations.length > 0 ? (
                     <Box sx={{ mt: 2 }}>
                         <Typography variant="h6">Recommended Candies:</Typography>
                         <List>
-                            {recommendations.map((candy, index) => (
-                                <ListItem key={index}>
+                            {(recommendations as [{score: number, candy: Candy}]).map((recommendation, index) => (
+                                <ListItem key={index} alignItems="flex-start">
+                                    {/*<Avatar*/}
+                                    {/*    src={URL.createObjectURL(recommendation.candy.image)}*/}
+                                    {/*    alt={recommendation.candy.flavorName}*/}
+                                    {/*    sx={{ mr: 2 }}*/}
+                                    {/*/>*/}
                                     <ListItemText
-                                        primary={candy.flavorName}
-                                        secondary={candy.description}
+                                        primary={recommendation.candy.flavorName}
+                                        secondary={
+                                            <>
+                                                <Typography
+                                                    component="span"
+                                                    variant="body2"
+                                                    color="textPrimary"
+                                                >
+                                                    {recommendation.candy.description}
+                                                </Typography>
+                                                <Box sx={{ mt: 1 }}>
+                                                    <Chip
+                                                        label={`Matching rating: ${recommendation.score} ⭐`}
+                                                        size="small"
+                                                        color="primary"
+                                                    />
+                                                    {recommendation.candy.glutenFree && (
+                                                        <Chip
+                                                            label="Gluten-Free"
+                                                            size="small"
+                                                            color="success"
+                                                            sx={{ ml: 1 }}
+                                                        />
+                                                    )}
+                                                    {recommendation.candy.sugarFree && (
+                                                        <Chip
+                                                            label="Sugar-Free"
+                                                            size="small"
+                                                            color="warning"
+                                                            sx={{ ml: 1 }}
+                                                        />
+                                                    )}
+                                                    {recommendation.candy.kosher && (
+                                                        <Chip
+                                                            label="Kosher"
+                                                            size="small"
+                                                            color="info"
+                                                            sx={{ ml: 1 }}
+                                                        />
+                                                    )}
+                                                    {recommendation.candy.seasonal && (
+                                                        <Chip
+                                                            label="Seasonal"
+                                                            size="small"
+                                                            color="secondary"
+                                                            sx={{ ml: 1 }}
+                                                        />
+                                                    )}
+                                                </Box>
+                                            </>
+                                        }
                                     />
                                 </ListItem>
                             ))}
                         </List>
                     </Box>
+                ) : (
+                    <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
+                        No recommendations yet. Start by telling me what you like!
+                    </Typography>
                 )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleCloseChat}>Close</Button>
-                <Button onClick={handleSendMessage} disabled={isLoading}>
+                <Button onClick={handleSendMessage} disabled={isLoading || !userInput}>
                     Send
                 </Button>
             </DialogActions>
