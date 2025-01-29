@@ -1,4 +1,4 @@
-import { Review } from './../../../server/src/models/reviewModel';
+import { Review } from "./../../../server/src/models/reviewModel";
 import axios from "axios";
 import { Dispatch } from "redux";
 import {
@@ -17,33 +17,36 @@ import {
   CANDY_CREATE_REVIEW_REQUEST,
   CANDY_CREATE_REVIEW_FAIL,
   CANDY_CREATE_REVIEW_SUCCESS,
+  CANDY_DELETE_REQUEST,
+  CANDY_DELETE_SUCCESS,
+  CANDY_DELETE_FAIL,
 } from "../Constants/candyConstants.ts";
 import { Candy } from "../Util/types.ts";
 import { RootState } from "../store.ts";
 
 export const listCandies =
   (keyword: string = "", maxPrice: number = 10000000, rating: string = "") =>
-    async (dispatch: Dispatch) => {
-      try {
-        dispatch({ type: CANDY_LIST_REQUEST });
-        const searchKeyword = keyword === "all" ? "" : keyword;
-        const searchRating = rating === "all" ? "" : rating;
+  async (dispatch: Dispatch) => {
+    try {
+      dispatch({ type: CANDY_LIST_REQUEST });
+      const searchKeyword = keyword === "all" ? "" : keyword;
+      const searchRating = rating === "all" ? "" : rating;
 
-        const { data } = await axios.get(
-          `/api/candy?keyword=${searchKeyword}&rating=${searchRating}`
-        );
+      const { data } = await axios.get(
+        `/api/candy?keyword=${searchKeyword}&rating=${searchRating}`
+      );
 
-        dispatch({ type: CANDY_LIST_SUCCESS, payload: data });
-      } catch (error: any) {
-        dispatch({
-          type: CANDY_LIST_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
-      }
-    };
+      dispatch({ type: CANDY_LIST_SUCCESS, payload: data });
+    } catch (error: any) {
+      dispatch({
+        type: CANDY_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const listExampleCandies = () => async (dispatch: Dispatch) => {
   try {
@@ -63,37 +66,68 @@ export const listExampleCandies = () => async (dispatch: Dispatch) => {
 
 export const createCandy =
   (candy: Candy, isAuthenticatedWithGoogle: boolean) =>
-    async (dispatch: any, getState: () => RootState) => {
-      try {
-        dispatch({ type: CANDY_CREATE_REQUEST });
+  async (dispatch: any, getState: () => RootState) => {
+    try {
+      dispatch({ type: CANDY_CREATE_REQUEST });
 
-        const {
-          userLogin: { userInfo },
-        } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-        const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
+      const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
-        const formData = new FormData();
-        formData.append('image', candy.image); // Assuming image contains the file or file path
+      const formData = new FormData();
+      formData.append("image", candy.image); // Assuming image contains the file or file path
 
-        const response = await axios.post('/api/upload', formData, config);
-        const candyWithImage = {
-          ...candy,
-          image: response.data,
-          isAuthenticatedWithGoogle,
-        };
+      const response = await axios.post("/api/upload", formData, config);
+      const candyWithImage = {
+        ...candy,
+        image: response.data,
+        isAuthenticatedWithGoogle,
+      };
 
-        const { data } = await axios.post(`/api/candy`, candyWithImage, config);
+      const { data } = await axios.post(`/api/candy`, candyWithImage, config);
 
-        dispatch({ type: CANDY_CREATE_SUCCESS, payload: data });
-      } catch (error: any) {
-        dispatch({
-          type: CANDY_CREATE_FAIL,
-          payload: error.response?.data.message || error.message,
-        });
-      }
-    };
+      dispatch({ type: CANDY_CREATE_SUCCESS, payload: data });
+    } catch (error: any) {
+      dispatch({
+        type: CANDY_CREATE_FAIL,
+        payload: error.response?.data.message || error.message,
+      });
+    }
+  };
 
+export const deleteCandy =
+  (id: string) =>
+  async (dispatch: Dispatch, getState: () => RootState): Promise<void> => {
+    try {
+      dispatch({
+        type: CANDY_DELETE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+
+      await axios.delete(`/api/CANDY/${id}`, config);
+
+      dispatch({ type: CANDY_DELETE_SUCCESS });
+    } catch (error: any) {
+      dispatch({
+        type: CANDY_DELETE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const updateCandy =
   (candy: Candy) => async (dispatch: any, getState: () => RootState) => {
@@ -106,18 +140,34 @@ export const updateCandy =
 
       const config = {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
-      const { data } = await axios.put(
-        `/api/candy/${candy.beanId}`,
-        candy,
-        config
-      );
+      if (typeof candy.image !== "string") {
+        const formData = new FormData();
+        formData.append("image", candy.image); // Assuming image contains the file or file path
 
-      dispatch({ type: CANDY_UPDATE_SUCCESS, payload: data });
+        const response = await axios.post("/api/upload", formData, config);
+        const candyWithImage = {
+          ...candy,
+          image: response.data,
+        };
+
+        const { data } = await axios.put(
+          `/api/candy/${candyWithImage._id}`,
+          candyWithImage,
+          config
+        );
+        dispatch({ type: CANDY_UPDATE_SUCCESS, payload: data });
+      } else {
+        const { data } = await axios.put(
+          `/api/candy/${candy._id}`,
+          candy,
+          config
+        );
+        dispatch({ type: CANDY_UPDATE_SUCCESS, payload: data });
+      }
     } catch (error: any) {
       dispatch({
         type: CANDY_UPDATE_FAIL,
@@ -131,10 +181,13 @@ export const createCandyReview = (
   review: Review,
   isAuthenticatedWithGoogle: boolean
 ) => {
-  return async (dispatch: Dispatch, getState: () => RootState): Promise<void> => {
+  return async (
+    dispatch: Dispatch,
+    getState: () => RootState
+  ): Promise<void> => {
     try {
       dispatch({
-        type: 'CANDY_CREATE_REVIEW_REQUEST',
+        type: "CANDY_CREATE_REVIEW_REQUEST",
       });
 
       const {
@@ -143,7 +196,7 @@ export const createCandyReview = (
 
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
@@ -154,10 +207,10 @@ export const createCandyReview = (
         config
       );
 
-      dispatch({ type: 'CANDY_CREATE_REVIEW_SUCCESS' });
+      dispatch({ type: "CANDY_CREATE_REVIEW_SUCCESS" });
     } catch (error: any) {
       dispatch({
-        type: 'CANDY_CREATE_REVIEW_FAIL',
+        type: "CANDY_CREATE_REVIEW_FAIL",
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

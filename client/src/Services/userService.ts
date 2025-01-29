@@ -1,11 +1,5 @@
 import axios, { AxiosError } from "axios";
 import {
-  LOGIN_FAIL,
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  REGISTER_FAIL,
-  REGISTER_REQUEST,
-  REGISTER_SUCCESS,
   USER_GOOGLE_LOGIN_SUCCESS,
   USERֹֹֹ_GOOGLEֹ_LOGIN_REQUEST,
   USER_GOOGLE_LOGIN_FAILED,
@@ -18,6 +12,12 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_FAIL,
   USER_DETAILS_SUCCESS,
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
+  USER_REGISTER_REQUEST,
+  USER_LOGIN_FAIL,
+  USER_REGISTER_SUCCESS,
+  USER_REGISTER_FAIL,
 } from "../Constants/userConstants";
 import { UserInfo } from "../util/types";
 import { RootState } from "../store";
@@ -62,7 +62,7 @@ export const login =
   (email: string, password: string) => async (dispatch: any) => {
     try {
       dispatch({
-        type: LOGIN_REQUEST,
+        type: USER_LOGIN_REQUEST,
       });
 
       const config = {
@@ -71,22 +71,29 @@ export const login =
         },
       };
 
-      const { data }: { data: UserInfo } = await axios.post(
+      const { data } = await axios.post(
         "/api/users/login",
         { email, password },
         config
       );
 
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: data,
-      });
+      if (data.error) {
+        dispatch({
+          type: USER_LOGIN_FAIL,
+          payload: data.error,
+        });
+      } else {
+        dispatch({
+          type: USER_LOGIN_SUCCESS,
+          payload: data,
+        });
 
-      localStorage.setItem("userInfo", JSON.stringify(data));
+        localStorage.setItem("userInfo", JSON.stringify(data));
+      }
     } catch (error) {
       const err = error as AxiosError;
       dispatch({
-        type: LOGIN_FAIL,
+        type: USER_LOGIN_FAIL,
         payload:
           err.response && (err.response.data as { message: string }).message
             ? (err.response.data as { message: string }).message
@@ -99,7 +106,7 @@ export const register =
   (name: string, email: string, password: string) => async (dispatch: any) => {
     try {
       dispatch({
-        type: REGISTER_REQUEST,
+        type: USER_REGISTER_REQUEST,
       });
 
       const config = {
@@ -115,12 +122,12 @@ export const register =
       );
 
       dispatch({
-        type: REGISTER_SUCCESS,
+        type: USER_REGISTER_SUCCESS,
         payload: data,
       });
 
       dispatch({
-        type: LOGIN_SUCCESS,
+        type: USER_LOGIN_SUCCESS,
         payload: data,
       });
 
@@ -128,7 +135,7 @@ export const register =
     } catch (error) {
       const err = error as AxiosError;
       dispatch({
-        type: REGISTER_FAIL,
+        type: USER_REGISTER_FAIL,
         payload:
           err.response && (err.response.data as { message: string }).message
             ? (err.response.data as { message: string }).message

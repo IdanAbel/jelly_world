@@ -3,7 +3,6 @@ import { ReviewSchema, Review } from './reviewModel';
 import User from './userModel';
 
 export interface Candy extends Document {
-  beanId: number;
   groupName: string[];
   ingredients: string[];
   flavorName: string;
@@ -25,10 +24,6 @@ export interface Candy extends Document {
 
 const CandySchema: Schema = new Schema(
   {
-    beanId: {
-      type: Number,
-      required: false,
-    },
     groupName: {
       type: [String],
       required: false,

@@ -1,189 +1,215 @@
-import {useState, useEffect, ChangeEvent} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
-import {TextField, Button, Paper, Grid, Typography, Dialog, Checkbox, FormControlLabel} from '@mui/material';
-import {Candy} from "../../Util/types.ts";
-import {RootState} from "../../store.ts";
-import {updateCandy} from "../../Services/candyServices.ts";
-import {CANDY_UPDATE_RESET} from "../../Constants/candyConstants.ts";
-import {Message} from "@mui/icons-material";
+import { useState, useEffect, ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  TextField,
+  Button,
+  Paper,
+  Grid,
+  Typography,
+  Dialog,
+  Checkbox,
+  FormControlLabel,
+  Container,
+  Switch,
+} from "@mui/material";
+import { Candy } from "../../Util/types.ts";
+import { RootState } from "../../store.ts";
+import { updateCandy } from "../../Services/candyServices.ts";
+import { CANDY_UPDATE_RESET } from "../../Constants/candyConstants.ts";
+import { Message } from "@mui/icons-material";
 import Loader from "../../Components/Loader.tsx";
 import ImageInput from "../../Components/ImageInput.tsx";
-import React from 'react';
+import React from "react";
+import CandyTypeSelect, { CandyTypeGroups } from "../../Components/CandyGenersSelect.tsx";
 
 interface CandyEditProps {
-    isOpen?: boolean;
-    candy?: Candy;
-    close?: () => void;
-    setCandyIdToUpdate?: () => void;
+  isOpen?: boolean;
+  candy?: Candy;
+  close?: () => void;
+  setCandyIdToUpdate?: () => void;
 }
 
-const CandyEdit: React.FC<CandyEditProps> = ({isOpen, candy, close, setCandyIdToUpdate}) => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+const CandyEdit: React.FC<CandyEditProps> = ({
+  isOpen,
+  candy,
+  close,
+  setCandyIdToUpdate,
+}) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const candyUpdate = useSelector((state: RootState) => state.candyUpdate);
-    const {loading, error, success: successUpdate} = candyUpdate;
+  const candyUpdate = useSelector((state: RootState) => state.candyUpdate);
+  const { loading, error, success: successUpdate } = candyUpdate;
 
-    const userLogin = useSelector((state: RootState) => state.userLogin);
-    const {userInfo} = userLogin;
+  const userLogin = useSelector((state: RootState) => state.userLogin);
+  const { userInfo } = userLogin;
 
-    const [inputs, setInputs] = useState<Candy>({
-        ...candy
-    });
+  const [inputs, setInputs] = useState<Candy>({
+    ...candy,
+  });
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const {name, value, type, checked} = event.target;
-        setInputs({...inputs, [name]: type === 'checkbox' ? checked : value});
-    };
+  const onChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    fieldName: keyof Candy
+  ) => {
+    setInputs({ ...inputs, [fieldName]: event.target.value });
+  };
 
-    const handleImageChange = (file: File | null) => {
-        if(file){
-            setInputs({...inputs, image: file});
-        }
-    };
 
-    const handleSubmit = () => {
-        dispatch(updateCandy(inputs) as any);
-        setCandyIdToUpdate();
-        close();
-    };
+  const handleImageChange = (file: File | null) => {
+    if (file) {
+      setInputs({ ...inputs, image: file });
+    }
+  };
 
-    useEffect(() => {
-        if (!userInfo) navigate('/');
+  const handleSubmit = () => {
+    dispatch(updateCandy(inputs) as any);
+    // setCandyIdToUpdate();
+    // close();
+  };
 
-        dispatch({type: CANDY_UPDATE_RESET});
-        if (successUpdate) navigate('/');
-    }, [dispatch, userInfo, navigate, successUpdate]);
+  useEffect(() => {
+    if (!userInfo) navigate("/");
 
-    return (
-        isOpen && (
-            <Dialog open={isOpen} onClose={close}>
-                <Paper elevation={3} style={{padding: '20px'}}>
-                    <Typography variant="h5" sx={{marginBottom: '10px'}}>
-                        Edit Candy Details
-                    </Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Flavor Name"
-                                name="flavorName"
-                                value={inputs.flavorName}
-                                onChange={handleChange}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Color Group"
-                                name="colorGroup"
-                                value={inputs.colorGroup}
-                                onChange={handleChange}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Background Color"
-                                name="backgroundColor"
-                                value={inputs.backgroundColor}
-                                onChange={handleChange}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Description"
-                                name="description"
-                                value={inputs.description}
-                                multiline
-                                rows={4}
-                                onChange={handleChange}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Ingredients"
-                                name="ingredients"
-                                value={inputs.ingredients.join(', ')}
-                                onChange={(event) =>
-                                    setInputs({
-                                        ...inputs,
-                                        ingredients: event.target.value.split(',').map((item) => item.trim())
-                                    })
-                                }
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        name="glutenFree"
-                                        checked={inputs.glutenFree}
-                                        onChange={handleChange}
-                                    />
-                                }
-                                label="Gluten-Free"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        name="sugarFree"
-                                        checked={inputs.sugarFree}
-                                        onChange={handleChange}
-                                    />
-                                }
-                                label="Sugar-Free"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        name="seasonal"
-                                        checked={inputs.seasonal}
-                                        onChange={handleChange}
-                                    />
-                                }
-                                label="Seasonal"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        name="kosher"
-                                        checked={inputs.kosher}
-                                        onChange={handleChange}
-                                    />
-                                }
-                                label="Kosher"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ImageInput onChange={handleImageChange} initialImage={inputs.image}/>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button variant="contained" color="primary" onClick={handleSubmit}>
-                                Submit
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Paper>
-                {loading && <Loader/>}
-                {error && <Message variant="danger">{error}</Message>}
-            </Dialog>
-        )
-    );
+    dispatch({ type: CANDY_UPDATE_RESET });
+    if (successUpdate) navigate("/");
+  }, [dispatch, userInfo, navigate, successUpdate]);
+
+  return (
+    isOpen && (
+      <Dialog open={isOpen} onClose={close}>
+        <Paper
+          elevation={3}
+          sx={{
+            padding: "20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{ alignSelf: "start", marginBottom: "10px" }}
+          >
+            Edit Candy Details
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Flavor Name"
+                value={inputs.flavorName}
+                onChange={(event) => onChange(event, "flavorName")}
+                variant="outlined"
+                sx={{
+                  "& .MuiInputBase-root": {
+                    "& input": { textAlign: "right" },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Description"
+                multiline
+                rows={4}
+                value={inputs.description}
+                onChange={(event) => onChange(event, "description")}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CandyTypeSelect
+                value={inputs.groupName}
+                onChange={(event) =>
+                  setInputs({ ...inputs, groupName: [event.target.value] })
+                }
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={inputs.glutenFree}
+                    onChange={(event) =>
+                      setInputs({ ...inputs, glutenFree: event.target.checked })
+                    }
+                  />
+                }
+                label="Gluten Free"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={inputs.sugarFree}
+                    onChange={(event) =>
+                      setInputs({ ...inputs, sugarFree: event.target.checked })
+                    }
+                  />
+                }
+                label="Sugar Free"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={inputs.seasonal}
+                    onChange={(event) =>
+                      setInputs({ ...inputs, seasonal: event.target.checked })
+                    }
+                  />
+                }
+                label="Seasonal"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={inputs.kosher}
+                    onChange={(event) =>
+                      setInputs({ ...inputs, kosher: event.target.checked })
+                    }
+                  />
+                }
+                label="Kosher"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <ImageInput
+                onChange={handleImageChange}
+                initialImage={inputs.image}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                onClick={handleSubmit}
+                sx={{
+                  backgroundColor: "#5d7afd",
+                  color: "white",
+                  borderRadius: "10px",
+                  "&:hover": {
+                    backgroundColor: "#274bef",
+                  },
+                }}
+              >
+                Submit
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+        {loading && <Loader />}
+        {error && <Message variant="danger">{error}</Message>}
+      </Dialog>
+    )
+  );
 };
 
 export default CandyEdit;

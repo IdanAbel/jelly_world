@@ -18,19 +18,19 @@ const getCandies = customAsyncHandler(
   async (req: CustomRequest, res: Response) => {
     const keyword = req.query.keyword
       ? {
-        name: {
-          $regex: req.query.keyword as string,
-          $options: "i",
-        },
-      }
+          name: {
+            $regex: req.query.keyword as string,
+            $options: "i",
+          },
+        }
       : {};
 
     const rating = req.query.rating
       ? {
-        rating: {
-          $eq: Number(req.query.rating),
-        },
-      }
+          rating: {
+            $eq: Number(req.query.rating),
+          },
+        }
       : {};
 
     const count = await Candy.countDocuments({
@@ -95,17 +95,30 @@ const createCandy = customAsyncHandler(
 const updateCandy = customAsyncHandler(
   async (req: CustomRequest, res: Response) => {
     const {
-      body: { name, description, image, flavor },
+      body: {
+        sugarFree,
+        groupName,
+        description,
+        image,
+        flavorName,
+        glutenFree,
+        seasonal,
+        kosher,
+      },
       params: { id },
     } = req;
 
     const candy = await Candy.findByIdAndUpdate(
       id,
       {
-        name,
         description,
         image,
-        flavor,
+        groupName,
+        flavorName,
+        sugarFree,
+        glutenFree,
+        seasonal,
+        kosher,
       },
       { new: true }
     );
