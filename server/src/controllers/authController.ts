@@ -75,7 +75,7 @@ const login = async (req: Request, res: Response) => {
   const user = await User.findOne({ email });
 
   if (!user || !(await user.matchPassword(password))) {
-    res.json({ error: "Invalid email or password" }).status(401);
+    res.json({ error: "Invalid email or password" }).status(400);
     return;
   }
 
@@ -119,20 +119,21 @@ const googleLogin = async (req: Request, res: Response) => {
 };
 
 const updateUserProfile = async (req: Request, res: Response) => {
-  const { _id } = req.body as IUser;
+  const { user } = req.body;
 
-  const user = await User.findById(_id);
+  console.log();
+  const userToUpdate = await User.findById(user._id);
 
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    user.image = req.body.image || user.image;
+  if (userToUpdate) {
+    userToUpdate.name = user.name || userToUpdate.name;
+    userToUpdate.email = user.email || userToUpdate.email;
+    userToUpdate.image = user.image || userToUpdate.image;
 
-    if (req.body.password) {
-      user.password = req.body.password;
+    if (user.password) {
+      userToUpdate.password = user.password;
     }
 
-    const updatedUser = await user.save();
+    const updatedUser = await userToUpdate.save();
 
     res.json({
       _id: updatedUser._id,

@@ -5,6 +5,7 @@ import { RootState } from "../../store.ts";
 import ChatBot from "../../Components/ChatBot.tsx";
 import Chat from "../../Components/Chat.tsx";
 import ChatIcon from "@mui/icons-material/Chat";
+import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 import CandyList from "../../Components/candyList.tsx";
 
 const Home = () => {
@@ -49,7 +50,7 @@ const Home = () => {
                             right: 16,
                         }}
                     >
-                        <ChatIcon />
+                        <SavedSearchIcon />
                     </Fab>
                 </Tooltip>
 

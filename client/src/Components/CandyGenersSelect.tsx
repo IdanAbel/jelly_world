@@ -6,7 +6,7 @@ interface GenresSelectProps {
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const CandyTypeGroups = {
+export const CandyTypeGroups = {
     FRUITY: 'Fruity',
     CHOCOLATE: 'Chocolate',
     SOUR: 'Sour',

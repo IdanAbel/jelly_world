@@ -7,6 +7,7 @@ interface Review {
 }
 
 export interface Candy {
+    _id: string;
     colorGroup: string;
     backgroundColor: string;
     image: File;
@@ -20,7 +21,6 @@ export interface Candy {
     createdBy: string; //TODO: User ID
     createdAt: Date;
     updatedAt: Date;
-    beanId: number;
     groupName: string[];
     ingredients: string[];
     flavorName: string;
