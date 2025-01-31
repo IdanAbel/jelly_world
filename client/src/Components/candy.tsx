@@ -24,8 +24,10 @@ import { RootState } from "../store";
 import { createCandyReview } from "../Services/candyServices";
 import CandyEdit from "../Pages/CandyEdit";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
+import { useAuth } from "../Context/AuthContext";
 
 const Candy: React.FC<{ candy: any }> = ({ candy }) => {
+  const { isAuthenticatedWithGoogle } = useAuth();
   const [reviews, setReviews] = useState(candy.reviews || []);
   const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState("");
@@ -40,7 +42,7 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
     if (rating && comment.trim()) {
       const newReview = { rating, comment };
       dispatch(
-        createCandyReview(candy._id as any, newReview as any, true) as any
+        createCandyReview(candy._id as any, newReview as any, isAuthenticatedWithGoogle) as any
       );
       setReviews((prev) => [...prev, newReview]);
       setRating(null);

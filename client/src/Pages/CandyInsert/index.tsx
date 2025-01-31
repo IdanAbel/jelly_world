@@ -28,10 +28,12 @@ import CandyTypeSelect from '../../Components/CandyGenersSelect.tsx';
 import ImageInput from '../../Components/ImageInput.tsx';
 import Loader from '../../Components/Loader.tsx';
 import React from 'react';
+import { useAuth } from "../../Context/AuthContext.tsx";
 
 const CandyInsert = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isAuthenticatedWithGoogle } = useAuth();
 
   const { loading, candies, error } = useSelector(
     (state: RootState) => state.candyExampleList
@@ -88,7 +90,7 @@ const CandyInsert = () => {
   };
 
   const handleSubmit = () => {
-    dispatch(createCandy(inputs as any, true) as any); //TODO: IMPLEMENT TRUE
+    dispatch(createCandy(inputs as any, isAuthenticatedWithGoogle) as any); //TODO: IMPLEMENT TRUE
   };
 
   useEffect(() => {
