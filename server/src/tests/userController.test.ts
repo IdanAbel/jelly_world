@@ -2,8 +2,8 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import initApp from '../server'; // Adjust the path as needed
-import User from '../models/userModel'; // Adjust the path as needed
+import initApp from '../server';
+import User from '../models/userModel';
 
 let app: any;
 let server: any;
@@ -17,7 +17,6 @@ const user = {
 };
 
 beforeAll(async () => {
-    // Initialize the app and server
     app = await initApp();
     server = createServer(app);
     io = new Server(server, {
@@ -35,7 +34,7 @@ beforeAll(async () => {
     await User.deleteOne({ email: user.email });
     await request(app).post('/api/users').send(user);
     const loginResponse = await request(app).post('/api/users/login').send(user);
-    // console.log(loginResponse.body);
+    console.log(loginResponse.body);
     accessToken = loginResponse.body.token;
 }, 20000);
 
@@ -60,35 +59,34 @@ describe('User Routes', () => {
 
     it('GET /api/users/:id should return a user by ID', async () => {
         const newUser = await User.create({
-            name: 'John Doe',
+            name: 'Jon Cruyff',
             email: 'john@example.com',
-            password: 'password123',
+            password: 'myPass23',
         });
 
         const response = await request(app).get(`/api/users/${newUser._id}`);
         expect(response.status).toBe(200);
-        expect(response.body.name).toBe('John Doe');
+        expect(response.body.name).toBe('Jon Cruyff');
     });
 
     it('GET /api/users/profile should return user profile', async () => {
         const response = await request(app)
             .get('/api/users/profile')
-            .set('Authorization', `Bearer ${accessToken}`)
-            .send(user);
+            .set('Authorization', `Bearer ${accessToken}`);
         expect(response.status).toBe(200);
         expect(response.body.name).toBe(user.name);
     });
 
     it('POST /api/users should create a new user', async () => {
         const userData = {
-            name: 'John Doe',
+            name: 'Jon Cruyff',
             email: 'john@example.com',
-            password: 'password123',
+            password: 'myPass23',
         };
 
         const response = await request(app).post('/api/users').send(userData);
         expect(response.status).toBe(200);
-        expect(response.body.name).toBe('John Doe');
+        expect(response.body.name).toBe('Jon Cruyff');
     });
 
     it('POST /api/users/login should authenticate user', async () => {
@@ -106,7 +104,6 @@ describe('User Routes', () => {
         const updatedData = {
             name: 'new Name',
             email: 'updatedUser@example.com',
-            _id: '12345'
         };
 
         const response = await request(app)
@@ -119,9 +116,9 @@ describe('User Routes', () => {
 
     it('DELETE /api/users/:id should delete user by ID', async () => {
         const newUser = await User.create({
-            name: 'John Doe',
+            name: 'Jon Cruyff',
             email: 'john@example.com',
-            password: 'password123',
+            password: 'myPass23',
         });
 
         const response = await request(app)
