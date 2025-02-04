@@ -25,6 +25,7 @@ const getById = async (req: Request, res: Response) => {
 };
 
 const getUserProfile = async (req: Request, res: Response) => {
+  console.log("req.body", req.body);
   const { _id } = req.body as IUser;
   const user = await User.findById(_id);
 
@@ -119,9 +120,9 @@ const googleLogin = async (req: Request, res: Response) => {
 };
 
 const updateUserProfile = async (req: Request, res: Response) => {
+  console.log("req.body", req.body);
   const { user } = req.body;
 
-  console.log();
   const userToUpdate = await User.findById(user._id);
 
   if (userToUpdate) {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import Message, { IMessage } from "../models/MessageModel";
+import Message, { IMessage } from "../models/messageModel";
 
 const getMessages = asyncHandler(async (req: Request, res: Response) => {
   const messages = await Message.find({});

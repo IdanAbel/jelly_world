@@ -2,7 +2,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import initApp from "./server";
 import { createMessage } from "./controllers/messageController";
-import { IMessage } from "./models/MessageModel";
+import { IMessage } from "./models/messageModel";
 
 const port = process.env.PORT || 3000;
 
