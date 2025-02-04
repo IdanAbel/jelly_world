@@ -8,6 +8,7 @@ import {
   createCandyReview,
   getTopCandies,
   getExampleCandies,
+  likeCandy, unlikeCandy,
 } from "../controllers/candyController";
 import { protect } from "../middlewares/authMiddleware";
 
@@ -21,6 +22,8 @@ router.get("/top", getTopCandies);
 router.get("/:id", getCandyById);
 router.delete("/:id", protect, deleteCandy);
 router.put("/:id", protect, updateCandy);
+router.post('/:id/like', protect, likeCandy);
+router.post('/:id/unlike', protect, unlikeCandy);
 
 export default router;
 
@@ -259,4 +262,54 @@ export default router;
  *         rating: 9.5
  *         comment: "This candy is amazing!"
  *         user: "JohnDoe123"
+ * @swagger
+ * /candy/{id}/like:
+ *   post:
+ *     summary: "Like a candy"
+ *     tags:
+ *       - candy
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: "ID of the candy to like"
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *     responses:
+ *       '200':
+ *         description: "Candy liked successfully"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Candy"
+ *       '400':
+ *         description: "Bad request, invalid data"
+ *       '404':
+ *         description: "Candy not found"
+ * @swagger
+ * /candy/{id}/unlike:
+ *   post:
+ *     summary: "Unlike a candy"
+ *     tags:
+ *       - candy
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: "ID of the candy to unlike"
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *     responses:
+ *       '200':
+ *         description: "Candy unliked successfully"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Candy"
+ *       '400':
+ *         description: "Bad request, invalid data"
+ *       '404':
+ *         description: "Candy not found"
  */

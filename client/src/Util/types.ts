@@ -19,6 +19,7 @@ export interface Candy {
     reviewsAmount: number;
     reviews: Review[];
     createdBy: string; //TODO: User ID
+    likes: string[];
     createdAt: Date;
     updatedAt: Date;
     groupName: string[];

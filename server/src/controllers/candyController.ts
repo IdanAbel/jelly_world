@@ -171,6 +171,73 @@ const getTopCandies = customAsyncHandler(
     res.json(candies);
   }
 );
+const likeCandy = customAsyncHandler(async (req: CustomRequest, res: Response) => {
+    const { id } = req.params;
+    const { userId } = req.body;
+    console.log("userId", userId);
+
+    if (!userId) {
+        res.status(401);
+        throw new Error('User not authenticated');
+    }
+
+    if (typeof userId !== 'string') {
+        res.status(400);
+        throw new Error('Invalid user ID');
+    }
+
+    const candy = await Candy.findById(id);
+    if (!candy) {
+        res.status(404);
+        throw new Error('Candy not found');
+    }
+
+    const userIdObjectId = new mongoose.Types.ObjectId(userId);
+
+    if (candy.likes.includes(userIdObjectId)) {
+        res.status(400);
+        throw new Error('User already liked this candy');
+    }
+
+    candy.likes.push(userIdObjectId);
+    await candy.save();
+
+    res.status(200).json({ message: 'Candy liked successfully', candy });
+});
+
+const unlikeCandy = customAsyncHandler(async (req: CustomRequest, res: Response) => {
+    const { id } = req.params;
+    const { userId } = req.body;
+    console.log("userId", userId);
+
+    if (!userId) {
+        res.status(401);
+        throw new Error('User not authenticated');
+    }
+
+    if (typeof userId !== 'string') {
+        res.status(400);
+        throw new Error('Invalid user ID');
+    }
+
+    const candy = await Candy.findById(id);
+    if (!candy) {
+        res.status(404);
+        throw new Error('Candy not found');
+    }
+
+    const userIdObjectId = new mongoose.Types.ObjectId(userId);
+
+    if (!candy.likes.includes(userIdObjectId)) {
+        res.status(400);
+        throw new Error('User did not like this candy');
+    }
+
+    candy.likes = candy.likes.filter((like) => like.toString() !== userIdObjectId.toString());
+    await candy.save();
+
+    res.status(200).json({ message: 'Candy unliked successfully', candy });
+});
 
 export {
   getCandies,
@@ -181,4 +248,6 @@ export {
   createCandyReview,
   getExampleCandies,
   getTopCandies,
+  likeCandy,
+  unlikeCandy
 };
