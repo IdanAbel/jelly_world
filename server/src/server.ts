@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { dirname, join } from "path";
+import { join } from "path";
 import mongoose from "mongoose";
-import bodyParser from "body-parser";
 import express, { Express } from "express";
 import authRoutes from "./routes/authRoute";
 import candyRoute from "./routes/candyRoute";
@@ -26,13 +25,7 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/chatbot", chatBotRoute);
 app.use("/assets", express.static(join(__dirname, "/assets")));
 
-app.use(express.static(join(__dirname, "dist")));
-
-app.get('/*', (req, res) => {
-  res.sendFile(join(__dirname, 'dist', 'index.html'));
-});
-
-const options = {
+const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
@@ -42,11 +35,17 @@ const options = {
     },
     servers: [{ url: "http://localhost:3000" }],
   },
-  apis: ["./src/routes/*.ts"],
+  apis: [join(__dirname, "routes", "*.ts")],
 };
 
-const specs = swaggerJsDoc(options);
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+const swaggerSpecs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
+
+app.use(express.static(join(__dirname, "dist")));
+
+app.get('/*', (req, res) => {
+  res.sendFile(join(__dirname, 'dist', 'index.html'));
+});
 
 app.use(notFound);
 app.use(errorHandler);

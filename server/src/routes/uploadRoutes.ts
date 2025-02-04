@@ -40,3 +40,37 @@ const upload = multer({
 router.post("/", upload.single("image"), uploadImage);
 
 export default router;
+
+/**
+ * @swagger
+ * /upload:
+ *   post:
+ *     summary: Upload an image
+ *     tags:
+ *       - Upload
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       '200':
+ *         description: Image uploaded successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 filePath:
+ *                   type: string
+ *                   description: Relative path of the uploaded image
+ *       '400':
+ *         description: No file uploaded
+ *       '500':
+ *         description: Server error
+ */
