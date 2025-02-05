@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   Card,
   CardContent,
@@ -21,11 +21,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
-import { createCandyReview } from "../Services/candyServices";
+import {createCandyReview, likeCandy, unlikeCandy} from "../Services/candyServices";
 import CandyEdit from "../Pages/CandyEdit";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 import { useAuth } from "../Context/AuthContext";
-
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 const Candy: React.FC<{ candy: any }> = ({ candy }) => {
   const { isAuthenticatedWithGoogle } = useAuth();
   const [reviews, setReviews] = useState(candy.reviews || []);
@@ -37,6 +37,15 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
   const userLogin = useSelector((state: RootState) => state.userLogin);
   const { userInfo } = userLogin;
   const dispatch = useDispatch();
+  const [likes, setLikes] = useState<string[]>(candy.likes || []);
+  const [isLiked, setIsLiked] = useState<boolean>(candy.likes.includes(userInfo?.id));
+  console.log("shalev gay", candy.likes.includes(userInfo?.id));
+  console.log("isLiked", isLiked);
+
+
+  useEffect(() => {
+    setIsLiked(likes.includes(userInfo?.id));
+  }, [likes, userInfo]);
 
   const handleAddReview = () => {
     if (rating && comment.trim()) {
@@ -50,6 +59,20 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
     }
   };
 
+  const handleLike = async () => {
+    if (!userInfo) return;
+
+    try {
+      if (isLiked) {
+        await dispatch(unlikeCandy(candy._id));
+        setLikes((prev) => prev.filter((id) => id !== userInfo.id));
+      } else {
+        await dispatch(likeCandy(candy._id));
+        setLikes((prev) => [...prev, userInfo.id]);
+      }
+    } catch (error) {
+    }
+  };
   const handleToggleEditDialog = () => {
     setIsEditDialogOpen((state) => !state);
   };
@@ -198,6 +221,14 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
                   disabled={!rating || !comment.trim()}
                 >
                   Submit Review
+                </Button>
+                <Button
+                    variant="contained"
+                    color={isLiked ? "secondary" : "primary"}
+                    onClick={handleLike}
+                    startIcon={<ThumbUpIcon />}
+                >
+                  {isLiked ? "Unlike" : "Like"} ({likes.length})
                 </Button>
               </Stack>
             </Box>

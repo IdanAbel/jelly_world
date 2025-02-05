@@ -23,6 +23,12 @@ import {
   CANDY_CREATE_REVIEW_SUCCESS,
   CANDY_CREATE_REVIEW_FAIL,
   CANDY_CREATE_REVIEW_RESET,
+    CANDY_LIKE_REQUEST,
+    CANDY_LIKE_SUCCESS,
+    CANDY_LIKE_FAIL,
+    CANDY_UNLIKE_REQUEST,
+    CANDY_UNLIKE_SUCCESS,
+    CANDY_UNLIKE_FAIL,
 } from "../Constants/candyConstants.ts";
 import { Candy } from "../util/types.ts"
 
@@ -159,3 +165,31 @@ export const candyCreateReviewReducer = (state = {}, action) => {
         return state;
     }
   };
+
+export const candyLikeReducer = (    state: CandyState = {},
+                                     action: Action) => {
+    switch (action.type) {
+        case CANDY_LIKE_REQUEST:
+            return { ...state, loading: true };
+        case CANDY_LIKE_SUCCESS:
+            return { ...state, loading: false };
+        case CANDY_LIKE_FAIL:
+            return { ...state, loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const candyUnlikeReducer = (    state: CandyState = {},
+                                       action: Action) => {
+    switch (action.type) {
+        case CANDY_UNLIKE_REQUEST:
+            return { ...state, loading: true };
+        case CANDY_UNLIKE_SUCCESS:
+            return { ...state, loading: false };
+        case CANDY_UNLIKE_FAIL:
+            return { ...state, loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};

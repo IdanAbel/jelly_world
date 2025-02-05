@@ -18,6 +18,7 @@ export interface Candy extends Document {
   reviewsAmount: number;
   reviews: Review[];
   createdBy: mongoose.Types.ObjectId;
+  likes: mongoose.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -84,6 +85,11 @@ const CandySchema: Schema = new Schema(
       ref: User,
       required: false,
     },
+    likes: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: User,
+      default: [],
+      }],
   },
   {
     timestamps: true,

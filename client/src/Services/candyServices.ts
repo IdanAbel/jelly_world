@@ -20,6 +20,12 @@ import {
   CANDY_DELETE_REQUEST,
   CANDY_DELETE_SUCCESS,
   CANDY_DELETE_FAIL,
+  CANDY_UNLIKE_FAIL,
+  CANDY_UNLIKE_SUCCESS,
+  CANDY_UNLIKE_REQUEST,
+  CANDY_LIKE_FAIL,
+  CANDY_LIKE_SUCCESS,
+  CANDY_LIKE_REQUEST,
 } from "../Constants/candyConstants.ts";
 import { Candy } from "../Util/types.ts";
 import { RootState } from "../store.ts";
@@ -175,7 +181,78 @@ export const updateCandy =
       });
     }
   };
+export const likeCandy =
+    (candyId: string) =>
+        async (dispatch: Dispatch, getState: () => RootState): Promise<void> => {
+          try {
+            dispatch({ type: CANDY_LIKE_REQUEST });
+            const {
+              userLogin: { userInfo },
+            } = getState();
 
+            if (!userInfo) {
+              throw new Error('User not authenticated');
+            }
+
+
+            const config = {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+              },
+            };
+
+            console.log('config', config)
+
+            await axios.post(`/api/candy/${candyId}/like`, { userId: userInfo.id }, config);
+
+            dispatch({ type: CANDY_LIKE_SUCCESS });
+          } catch (error: any) {
+            dispatch({
+              type: CANDY_LIKE_FAIL,
+              payload:
+                  error.response && error.response.data.message
+                      ? error.response.data.message
+                      : error.message,
+            });
+          }
+        };
+
+export const unlikeCandy =
+    (candyId: string) =>
+        async (dispatch: Dispatch, getState: () => RootState): Promise<void> => {
+          try {
+            dispatch({ type: CANDY_UNLIKE_REQUEST });
+
+            const {
+              userLogin: { userInfo },
+            } = getState();
+
+            if (!userInfo) {
+              throw new Error('User not authenticated');
+            }
+
+            const config = {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+              },
+            };
+            console.log('userInfo', userInfo);
+
+            await axios.post(`/api/candy/${candyId}/unlike`, { userId: userInfo.id }, config);
+
+            dispatch({ type: CANDY_UNLIKE_SUCCESS });
+          } catch (error: any) {
+            dispatch({
+              type: CANDY_UNLIKE_FAIL,
+              payload:
+                  error.response && error.response.data.message
+                      ? error.response.data.message
+                      : error.message,
+            });
+          }
+        };
 export const createCandyReview = (
   candyId: string,
   review: Review,
