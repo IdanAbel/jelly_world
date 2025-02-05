@@ -38,10 +38,13 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
   const { userInfo } = userLogin;
   const dispatch = useDispatch();
   const [likes, setLikes] = useState<string[]>(candy.likes || []);
-  const [isLiked, setIsLiked] = useState<boolean>(candy.likes.includes(userInfo?._id));
+  const [isLiked, setIsLiked] = useState<boolean>(candy.likes.includes(userInfo?.id));
+  console.log("shalev gay", candy.likes.includes(userInfo?.id));
+  console.log("isLiked", isLiked);
+
 
   useEffect(() => {
-    setIsLiked(likes.includes(userInfo?._id));
+    setIsLiked(likes.includes(userInfo?.id));
   }, [likes, userInfo]);
 
   const handleAddReview = () => {
@@ -62,10 +65,10 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
     try {
       if (isLiked) {
         await dispatch(unlikeCandy(candy._id));
-        setLikes((prev) => prev.filter((id) => id !== userInfo._id));
+        setLikes((prev) => prev.filter((id) => id !== userInfo.id));
       } else {
         await dispatch(likeCandy(candy._id));
-        setLikes((prev) => [...prev, userInfo._id]);
+        setLikes((prev) => [...prev, userInfo.id]);
       }
     } catch (error) {
     }
