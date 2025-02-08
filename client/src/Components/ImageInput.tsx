@@ -4,9 +4,10 @@ import { TextField, Typography, Box } from "@mui/material";
 interface ImageInputProps {
   onChange: (file: File | null) => void;
   initialImage?: string | File | null;
+  label: string;
 }
 
-const ImageInput: React.FC<ImageInputProps> = ({ onChange, initialImage = null }) => {
+const ImageInput: React.FC<ImageInputProps> = ({ onChange, initialImage = null, label }) => {
   const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const ImageInput: React.FC<ImageInputProps> = ({ onChange, initialImage = null }
       )}
       <TextField
         fullWidth
-        label="Upload Candy Image"
+        label={label}
         type="file"
         accept="image/*"
         onChange={handleImageChange}

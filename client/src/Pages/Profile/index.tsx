@@ -128,6 +128,7 @@ const Profile: React.FC = () => {
             <ImageInput
               onChange={handleImageChange}
               initialImage={image}
+              label={"Profile Picture"}
             />
             {/* <input
               type="file"

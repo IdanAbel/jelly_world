@@ -2,7 +2,6 @@ import { Response } from "express";
 import { customAsyncHandler } from "../common/customTypes";
 
 const uploadImage = customAsyncHandler(async (req: any, res: Response) => {
-  console.log("ssssssssssssssss");
 
   try {
     const uploadedFile = req.file;
@@ -14,7 +13,7 @@ const uploadImage = customAsyncHandler(async (req: any, res: Response) => {
     const filePath = uploadedFile.path;
     const resultSlice = filePath.slice(filePath.indexOf("/assets/"));
 
-    res.status(200).send(filePath);
+    res.status(200).send(resultSlice);
   } catch (error) {
     console.log(error);
   }
