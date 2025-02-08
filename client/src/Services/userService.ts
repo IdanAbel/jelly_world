@@ -192,10 +192,16 @@ export const updateUserProfile =
 
       const config = {
         headers: {
-          "Content-type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
+
+      if (typeof user.image !== "string") {
+        const formData = new FormData();
+        formData.append("image", user.image);
+        const response = await axios.post("/api/upload", formData, config);
+        user.image = await response.data;
+      }
 
       const { data } = await axios.put("/api/users/profile", user, config);
 
