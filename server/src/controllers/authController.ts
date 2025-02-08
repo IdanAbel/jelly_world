@@ -119,8 +119,6 @@ const googleLogin = async (req: Request, res: Response) => {
 };
 
 const updateUserProfile = async (req: Request, res: Response) => {
-
-  console.log({ sssssssssssssssss: req.body });
   const user = req.body;
 
   const userToUpdate = await User.findById(user._id);
