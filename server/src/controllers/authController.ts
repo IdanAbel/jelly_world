@@ -25,7 +25,6 @@ const getById = async (req: Request, res: Response) => {
 };
 
 const getUserProfile = async (req: Request, res: Response) => {
-  console.log("req.body", req.body);
   const { _id } = req.body as IUser;
   const user = await User.findById(_id);
 
@@ -120,8 +119,7 @@ const googleLogin = async (req: Request, res: Response) => {
 };
 
 const updateUserProfile = async (req: Request, res: Response) => {
-  console.log("req.body", req.body);
-  const { user } = req.body;
+  const user = req.body;
 
   const userToUpdate = await User.findById(user._id);
 
@@ -135,7 +133,7 @@ const updateUserProfile = async (req: Request, res: Response) => {
     }
 
     const updatedUser = await userToUpdate.save();
-
+    
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,

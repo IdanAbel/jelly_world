@@ -185,6 +185,7 @@ const CandyEdit: React.FC<CandyEditProps> = ({
               <ImageInput
                 onChange={handleImageChange}
                 initialImage={inputs.image}
+                label="Upload Candy Image"
               />
             </Grid>
             <Grid item xs={12}>
