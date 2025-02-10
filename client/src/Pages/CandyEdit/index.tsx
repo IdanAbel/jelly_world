@@ -17,11 +17,11 @@ import { Candy } from "../../Util/types.ts";
 import { RootState } from "../../store.ts";
 import { updateCandy } from "../../Services/candyServices.ts";
 import { CANDY_UPDATE_RESET } from "../../Constants/candyConstants.ts";
-import { Message } from "@mui/icons-material";
 import Loader from "../../Components/Loader.tsx";
 import ImageInput from "../../Components/ImageInput.tsx";
 import React from "react";
 import CandyTypeSelect, { CandyTypeGroups } from "../../Components/CandyGenersSelect.tsx";
+import Message from "../../Components/Message.tsx";
 
 interface CandyEditProps {
   isOpen?: boolean;
@@ -100,7 +100,7 @@ const CandyEdit: React.FC<CandyEditProps> = ({
                 fullWidth
                 label="Flavor Name"
                 value={inputs.flavorName}
-                onChange={(event) => onChange(event, "flavorName")}
+                onChange={(event: any) => onChange(event, "flavorName")}
                 variant="outlined"
                 sx={{
                   "& .MuiInputBase-root": {
@@ -116,7 +116,7 @@ const CandyEdit: React.FC<CandyEditProps> = ({
                 multiline
                 rows={4}
                 value={inputs.description}
-                onChange={(event) => onChange(event, "description")}
+                onChange={(event: any) => onChange(event, "description")}
                 variant="outlined"
               />
             </Grid>
@@ -185,6 +185,7 @@ const CandyEdit: React.FC<CandyEditProps> = ({
               <ImageInput
                 onChange={handleImageChange}
                 initialImage={inputs.image}
+                label="Upload Candy Image"
               />
             </Grid>
             <Grid item xs={12}>

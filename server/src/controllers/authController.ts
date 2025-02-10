@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import User, { IUser } from "../models/userModel";
 
 const clientId =
-  "797530137615-n0qiu7me2mrsg99defe9ltcbgoo4qb1t.apps.googleusercontent.com";
+  "797530137615-ih5j1t3k3ihv1uuuiapu48hicrh1qep1.apps.googleusercontent.com";
 const googleClient = new OAuth2Client(clientId);
 
 const getAll = async (req: Request, res: Response) => {
@@ -121,7 +121,7 @@ const googleLogin = async (req: Request, res: Response) => {
 
 const updateUserProfile = async (req: Request, res: Response) => {
   console.log("req.body", req.body);
-  const { user } = req.body;
+  const user  = req.body;
 
   const userToUpdate = await User.findById(user._id);
 

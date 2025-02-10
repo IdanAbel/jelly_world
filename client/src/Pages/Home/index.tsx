@@ -1,12 +1,12 @@
 import { Typography, Box, Tooltip, Fab } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store.ts";
-import ChatBot from "../../Components/ChatBot.tsx";
 import Chat from "../../Components/Chat.tsx";
 import ChatIcon from "@mui/icons-material/Chat";
 import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 import CandyList from "../../Components/candyList.tsx";
+import ChatBot from "../../Components/chatBot.tsx";
 
 const Home = () => {
     const [isChatOpen, setChatOpen] = useState(false);

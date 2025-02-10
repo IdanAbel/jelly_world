@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server.ts",
   "scripts": {
-    "dev": "copy .env_dev .env && npx nodemon ./src/app.ts",
+    "prod": "cp .env_prod .env && tsc -p tsconfig_prod.json && sudo node ./dist/src/app.js",
+    "dev": "cp .env_dev .env && sudo node ./dist/src/app.js",
     "start": "cp .env_dev .env tsc && node ./dist/app.js",
     "test": "cp .env_test .env jest && --detectOpenHandles --forceExit --runInBand",
     "testAuth": "cp .env_test .env && jest --detectOpenHandles --forceExit auth.test.ts",

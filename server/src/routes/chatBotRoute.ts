@@ -9,7 +9,7 @@ export default router;
 
 /**
  * @swagger
- * /chatbot/recommended:
+ * /api/chatbot/recommended:
  *   post:
  *     summary: Get recommended candies based on user preferences
  *     tags:

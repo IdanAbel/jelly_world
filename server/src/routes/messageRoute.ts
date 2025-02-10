@@ -9,7 +9,7 @@ export default router;
 
 /**
  * @swagger
- * /messages:
+ * /api/messages:
  *   get:
  *     summary: "Get all messages"
  *     tags:

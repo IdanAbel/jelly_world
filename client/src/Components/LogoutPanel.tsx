@@ -3,7 +3,7 @@ import { useAuth } from "../Context/AuthContext";
 import React from "react";
 
 const clientId =
-  "797530137615-n0qiu7me2mrsg99defe9ltcbgoo4qb1t.apps.googleusercontent.com";
+  "797530137615-ih5j1t3k3ihv1uuuiapu48hicrh1qep1.apps.googleusercontent.com";
 
 const LogoutPanel: React.FC = () => {
   const { isAuthenticatedWithGoogle, setAuthenticatedWithGoogle } = useAuth();

@@ -2,7 +2,7 @@ import React from 'react';
 import { TextField, MenuItem } from '@mui/material';
 
 interface GenresSelectProps {
-    value: string;
+    value: any;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 

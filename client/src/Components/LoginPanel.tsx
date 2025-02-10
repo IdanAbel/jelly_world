@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import React from "react";
-import { googleLogin, login } from "../services/userService";
 import { useAuth } from "../Context/AuthContext";
+import { googleLogin } from "../Services/userService";
 
 const clientId =
-  "797530137615-n0qiu7me2mrsg99defe9ltcbgoo4qb1t.apps.googleusercontent.com";
+  "797530137615-ih5j1t3k3ihv1uuuiapu48hicrh1qep1.apps.googleusercontent.com";
 
 const LoginPanel: React.FC = () => {
   const { isAuthenticatedWithGoogle, setAuthenticatedWithGoogle } = useAuth();

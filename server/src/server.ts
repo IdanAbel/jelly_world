@@ -12,18 +12,31 @@ import swaggerUI from "swagger-ui-express";
 import { errorHandler, notFound } from "./middlewares/errorMiddleware";
 import uploadRoutes from "./routes/uploadRoutes";
 import chatBotRoute from "./routes/chatBotRoute";
+import bodyParser from "body-parser";
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Cross-Origin-Opener-Policy", "unsafe-none");
+  res.header("Cross-Origin-Embedder-Policy", "unsafe-none");
+
+  next();
+});
+
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use("/api/users", authRoutes);
 app.use("/api/candy", candyRoute);
 app.use("/api/messages", messageRoute);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/chatbot", chatBotRoute);
-app.use("/assets", express.static(join(__dirname, "/assets")));
+app.use("/assets", express.static("assets"));
 
 const swaggerOptions = {
   definition: {
@@ -33,19 +46,17 @@ const swaggerOptions = {
       version: "1.0.0",
       description: "REST server including authentication using JWT",
     },
-    servers: [{ url: "http://localhost:3000" }],
+    servers: [{ url: "http://localhost:3000" }, { url: "http://10.10.246.63" }, 
+      { url: "https://10.10.246.63" }, {url: "http://node63.cs.colman.ac.il"}
+    ],
   },
-  apis: [join(__dirname, "routes", "*.ts")],
+  apis: ["./src/routes/*.ts"],
 };
 
 const swaggerSpecs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
+app.use(express.static("front"));
 
-app.use(express.static(join(__dirname, "dist")));
-
-app.get('/*', (req, res) => {
-  res.sendFile(join(__dirname, 'dist', 'index.html'));
-});
 
 app.use(notFound);
 app.use(errorHandler);

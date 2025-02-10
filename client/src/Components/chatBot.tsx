@@ -21,7 +21,7 @@ import { Candy } from "../Util/types";
 interface ChatBotProps {
     isChatOpen: boolean;
     handleCloseChat: () => void;
-    candies: Candy[];
+    candies: any;
 }
 
 const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, handleCloseChat, candies }) => {
@@ -77,13 +77,8 @@ const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, handleCloseChat, candies 
                     <Box sx={{ mt: 2 }}>
                         <Typography variant="h6">Recommended Candies:</Typography>
                         <List>
-                            {(recommendations as [{score: number, candy: Candy}]).map((recommendation, index) => (
+                            {(recommendations as [any]).map((recommendation, index) => (
                                 <ListItem key={index} alignItems="flex-start">
-                                    {/*<Avatar*/}
-                                    {/*    src={URL.createObjectURL(recommendation.candy.image)}*/}
-                                    {/*    alt={recommendation.candy.flavorName}*/}
-                                    {/*    sx={{ mr: 2 }}*/}
-                                    {/*/>*/}
                                     <ListItemText
                                         primary={recommendation.candy.flavorName}
                                         secondary={

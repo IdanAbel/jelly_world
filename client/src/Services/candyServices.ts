@@ -14,9 +14,6 @@ import {
   CANDY_EXAMPLE_LIST_REQUEST,
   CANDY_EXAMPLE_LIST_SUCCESS,
   CANDY_EXAMPLE_LIST_FAIL,
-  CANDY_CREATE_REVIEW_REQUEST,
-  CANDY_CREATE_REVIEW_FAIL,
-  CANDY_CREATE_REVIEW_SUCCESS,
   CANDY_DELETE_REQUEST,
   CANDY_DELETE_SUCCESS,
   CANDY_DELETE_FAIL,
@@ -31,7 +28,7 @@ import { Candy } from "../Util/types.ts";
 import { RootState } from "../store.ts";
 
 export const listCandies =
-  (keyword: string = "", maxPrice: number = 10000000, rating: string = "") =>
+  (keyword: string = "", rating: string = "") =>
   async (dispatch: Dispatch) => {
     try {
       dispatch({ type: CANDY_LIST_REQUEST });

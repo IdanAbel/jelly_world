@@ -8,13 +8,13 @@ import {
   inputContainer,
   submitButton,
 } from "./styles";
-import { register } from "../../../services/userService";
-import FormContainer from "../../../components/FormContainer";
 
 //import Message from "../../../Components/Message"; //TODO
 // import Loader from "../../../Components/Loader"; //TODO
 import { RootState } from "../../../store"; //TODO
 import Message from "../../../Components/Message";
+import FormContainer from "../../../Components/FormContainer";
+import { register } from "../../../Services/userService";
 
 const RegisterForm: React.FC = () => {
   const [name, setName] = useState<string>("");
