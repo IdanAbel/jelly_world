@@ -16,7 +16,7 @@ const App: React.FC = () => {
       });
     };
 
-    gapi.load(" ", start);
+    gapi.load("client:auth2", start);
   }, []); 
 
   return (

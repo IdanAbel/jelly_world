@@ -19,7 +19,7 @@ import {
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SendIcon from "@mui/icons-material/Send";
 
-const socket = io('http://localhost:3000'); // Update with your server URL
+const socket = io('https://node63.cs.colman.ac.il'); // Update with your server URL
 
 interface Message {
   text: string;

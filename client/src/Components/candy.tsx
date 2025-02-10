@@ -26,12 +26,13 @@ import CandyEdit from "../Pages/CandyEdit";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 import { useAuth } from "../Context/AuthContext";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import { useNavigate } from "react-router-dom";
 const Candy: React.FC<{ candy: any }> = ({ candy }) => {
   const { isAuthenticatedWithGoogle } = useAuth();
   const [reviews, setReviews] = useState(candy.reviews || []);
   const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState("");
-  const [showReviews, setShowReviews] = useState(false);
+  const navigate = useNavigate();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const userLogin = useSelector((state: RootState) => state.userLogin);
@@ -188,7 +189,7 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
                 size="medium"
               />
               <Typography variant="body2" color="text.secondary">
-                ({candy.reviewsAmount} reviews)
+                ({reviews.length} reviews)
               </Typography>
             </Stack>
           </Box>
@@ -244,31 +245,11 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
             </>
           )}
           <Box mt={4}>
-            <Button
-              variant="text"
-              color="primary"
-              onClick={() => setShowReviews((prev) => !prev)}
-            >
-              {showReviews ? "Hide Reviews" : "Show  All Reviews"}
+          <Button variant="contained" color="primary"  onClick={() => navigate("/reviews", { state: { reviews } })}
+          >
+                 View Reviews
             </Button>
-            <Collapse in={showReviews}>
-              <List>
-                {reviews.length > 0 ? (
-                  reviews.map((review: any, index: any) => (
-                    <ListItem key={index}>
-                      <ListItemText
-                        primary={`Rating: ${review.rating}/10`}
-                        secondary={review.comment}
-                      />
-                    </ListItem>
-                  ))
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    No reviews yet.
-                  </Typography>
-                )}
-              </List>
-            </Collapse>
+        
           </Box>
         </CardContent>
       </Card>

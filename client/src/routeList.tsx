@@ -6,6 +6,7 @@ import CandyInsert from "./Pages/CandyInsert";
 import CandyEdit from "./Pages/CandyEdit";
 import Register from './Pages/Register';
 import Login from './Pages/Login';
+import Reviews from './Components/reviews';
 
 const RouteList: React.FC = () => (
     <Routes>
@@ -14,6 +15,7 @@ const RouteList: React.FC = () => (
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/candy-insert' element={<CandyInsert/>}/>
         <Route path='/admin/candy/:id/edit' element={<CandyEdit/>}/>
+        <Route path="/reviews" element={<Reviews />} />
         <Route path='/' element={<Home/>}/>
     </Routes>
 );
