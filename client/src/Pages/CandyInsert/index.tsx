@@ -247,8 +247,7 @@ const CandyInsert = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <ImageInput onChange={handleImageChange}
-                label="Upload Candy Image" />
+              <ImageInput onChange={handleImageChange} />
             </Grid>
             <Grid item xs={12}>
               <Button

@@ -34,6 +34,7 @@ beforeAll(async () => {
     await User.deleteOne({ email: user.email });
     await request(app).post('/api/users').send(user);
     const loginResponse = await request(app).post('/api/users/login').send(user);
+    console.log(loginResponse.body);
     accessToken = loginResponse.body.token;
 }, 20000);
 
@@ -123,6 +124,7 @@ describe('User Routes', () => {
         const response = await request(app)
             .delete(`/api/users/${newUser._id}`)
             .set('Authorization', `Bearer ${accessToken}`);
+        console.log(response.body);
         expect(response.status).toBe(200);
         expect(response.body.message).toBe('User deleted successfully');
     });

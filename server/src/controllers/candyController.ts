@@ -174,6 +174,7 @@ const getTopCandies = customAsyncHandler(
 const likeCandy = customAsyncHandler(async (req: CustomRequest, res: Response) => {
     const { id } = req.params;
     const { userId } = req.body;
+    console.log("userId", userId);
 
     if (!userId) {
         res.status(401);
@@ -207,6 +208,7 @@ const likeCandy = customAsyncHandler(async (req: CustomRequest, res: Response) =
 const unlikeCandy = customAsyncHandler(async (req: CustomRequest, res: Response) => {
     const { id } = req.params;
     const { userId } = req.body;
+    console.log("userId", userId);
 
     if (!userId) {
         res.status(401);

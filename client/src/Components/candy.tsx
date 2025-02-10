@@ -39,6 +39,9 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
   const dispatch = useDispatch();
   const [likes, setLikes] = useState<string[]>(candy.likes || []);
   const [isLiked, setIsLiked] = useState<boolean>(candy.likes.includes(userInfo?.id));
+  console.log("shalev gay", candy.likes.includes(userInfo?.id));
+  console.log("isLiked", isLiked);
+
 
   useEffect(() => {
     setIsLiked(likes.includes(userInfo?.id));

@@ -45,6 +45,7 @@ const Chat: React.FC<ChatProps> = ({ isChatOpen, handleCloseChat }) => {
   const { userInfo }: { userInfo: UserInfo } = userLogin;
 
   useEffect(() => {
+    console.log("load messages");
     async function fetchData() {
       const { data } = await axios.get("/api/messages");
       setMessages(data.messages);
@@ -54,6 +55,7 @@ const Chat: React.FC<ChatProps> = ({ isChatOpen, handleCloseChat }) => {
 
   useEffect(() => {
     socket.on("update-messages", (message: Message) => {
+      console.log(message);
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
