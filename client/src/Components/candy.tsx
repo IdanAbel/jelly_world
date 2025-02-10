@@ -53,7 +53,7 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
       dispatch(
         createCandyReview(candy._id as any, newReview as any, isAuthenticatedWithGoogle) as any
       );
-      setReviews((prev) => [...prev, newReview]);
+      setReviews((prev: any) => [...prev, newReview]);
       setRating(null);
       setComment("");
     }
@@ -64,10 +64,10 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
 
     try {
       if (isLiked) {
-        await dispatch(unlikeCandy(candy._id));
+        await dispatch(unlikeCandy(candy._id) as any);
         setLikes((prev) => prev.filter((id) => id !== userInfo.id));
       } else {
-        await dispatch(likeCandy(candy._id));
+        await dispatch(likeCandy(candy._id) as any);
         setLikes((prev) => [...prev, userInfo.id]);
       }
     } catch (error) {
@@ -254,7 +254,7 @@ const Candy: React.FC<{ candy: any }> = ({ candy }) => {
             <Collapse in={showReviews}>
               <List>
                 {reviews.length > 0 ? (
-                  reviews.map((review, index) => (
+                  reviews.map((review: any, index: any) => (
                     <ListItem key={index}>
                       <ListItemText
                         primary={`Rating: ${review.rating}/10`}

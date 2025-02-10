@@ -4,13 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 
 import { Box, TextField, Button } from "@mui/material";
-import {
-  container,
-  inputContainer,
-  submitButton,
-} from ".././/../pages/Login/components/styles";
+
 import Message from "../../Components/Message";
-import { getUserDetails, updateUserProfile } from "../../services/userService";
+import { container, inputContainer, submitButton } from "../Register/components/styles";
+import { getUserDetails, updateUserProfile } from "../../Services/userService";
+import ImageInput from "../../Components/ImageInput";
 
 const Profile: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -18,7 +16,7 @@ const Profile: React.FC = () => {
   const [password] = useState<string>("");
   const [confirmPassword] = useState<string>("");
   const [message, setMessage] = useState<string | null>(null);
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState<File>();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -56,18 +54,11 @@ const Profile: React.FC = () => {
     }
   }, [success, updatedUserInfo]);
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
+  const handleImageChange = (file: File | null) => {
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string);
-      };
-
-      reader.readAsDataURL(file);
+      setImage(file);
     }
-  };
+  }
 
   const submitHandler = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -76,7 +67,7 @@ const Profile: React.FC = () => {
     } else {
       dispatch(
         updateUserProfile({
-          user: { _id: userInfo?.id, name, email, password, image },
+           _id: userInfo?.id, name, email, password, image 
         }) as any
       );
     }
@@ -106,7 +97,12 @@ const Profile: React.FC = () => {
               alignItems: "center",
             }}
           >
-            <img
+            <ImageInput
+              onChange={handleImageChange}
+              initialImage={image}
+              label={"Profile Picture"}
+            />
+            {/* <img
               src={image}
               alt="User"
               style={{
@@ -121,7 +117,7 @@ const Profile: React.FC = () => {
               accept="image/*"
               onChange={handleImageChange}
               style={{ marginBottom: "15px", marginLeft: "100px" }}
-            />
+            /> */}
           </div>
           <div className="form-group">
             <label

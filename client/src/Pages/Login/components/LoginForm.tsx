@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,12 +9,12 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { container, inputContainer, submitButton } from "./styles";
-import FormContainer from "../../../components/FormContainer";
-import { login } from "../../../services/userService";
 
 import { RootState } from "../../../store";
 import { useAuth } from "../../../Context/AuthContext";
 import Message from "../../../Components/Message";
+import FormContainer from "../../../Components/FormContainer";
+import { login } from "../../../Services/userService";
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>("");

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import RouteList from "./routeList";
-import Navbar from "./components/Navbar";
 import { BrowserRouter as Router } from "react-router-dom";
 import { gapi } from "gapi-script";
+import Navbar from "./Components/Navbar";
 
 const clientId =
-  "797530137615-n0qiu7me2mrsg99defe9ltcbgoo4qb1t.apps.googleusercontent.com";
+  "797530137615-ih5j1t3k3ihv1uuuiapu48hicrh1qep1.apps.googleusercontent.com";
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -16,7 +16,7 @@ const App: React.FC = () => {
       });
     };
 
-    gapi.load("client:auth2", start);
+    gapi.load(" ", start);
   }, []); 
 
   return (

@@ -5,8 +5,8 @@ import styled from "styled-components";
 
 import React from "react";
 import { useAuth } from "../Context/AuthContext";
-import { logout } from "../services/userService";
 import LogoutPanel from "./LogoutPanel.tsx";
+import { logout } from "../Services/userService.ts";
 
 interface UserLoginState {
   userInfo: {

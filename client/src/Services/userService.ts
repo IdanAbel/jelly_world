@@ -19,11 +19,11 @@ import {
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
 } from "../Constants/userConstants";
-import { UserInfo } from "../util/types";
 import { RootState } from "../store";
 import { Dispatch } from "redux";
+import { UserInfo } from "../Util/types";
 
-export const googleLogin = (tokenId) => async (dispatch: any) => {
+export const googleLogin = (tokenId: any) => async (dispatch: any) => {
   try {
     dispatch({
       type: USERֹֹֹ_GOOGLEֹ_LOGIN_REQUEST,
@@ -47,7 +47,7 @@ export const googleLogin = (tokenId) => async (dispatch: any) => {
     });
 
     localStorage.setItem("userInfo", JSON.stringify(data));
-  } catch (error) {
+  } catch (error: any) {
     dispatch({
       type: USER_GOOGLE_LOGIN_FAILED,
       payload:
@@ -144,7 +144,7 @@ export const register =
     }
   };
 
-export const logout = () => (dispatch) => {
+export const logout = () => (dispatch: any) => {
   localStorage.removeItem("userInfo");
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
@@ -192,10 +192,18 @@ export const updateUserProfile =
 
       const config = {
         headers: {
-          "Content-type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
+
+      console.log(user.image);
+      if (typeof user.image !== "string") {
+        const formData = new FormData();
+        console.log(user.image);
+        formData.append("image", user.image );
+        const response = await axios.post("/api/upload", formData, config);
+        user.image = await response.data;
+      }
 
       const { data } = await axios.put("/api/users/profile", user, config);
 

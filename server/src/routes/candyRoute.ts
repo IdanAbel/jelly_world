@@ -30,7 +30,7 @@ export default router;
 // Swagger documentation for the candy routes
 /**
  * @swagger
- * /candy:
+ * /api/candy:
  *   get:
  *     summary: "Get all candies"
  *     tags:
@@ -65,7 +65,7 @@ export default router;
 
 /**
  * @swagger
- * /candy/{id}:
+ * /api/candy/{id}:
  *   get:
  *     summary: "Get a candy by ID"
  *     tags:
@@ -129,7 +129,7 @@ export default router;
 
 /**
  * @swagger
- * /candy/{id}/reviews:
+ * /api/candy/{id}/reviews:
  *   get:
  *     summary: "Get all reviews for a candy"
  *     tags:
@@ -263,7 +263,7 @@ export default router;
  *         comment: "This candy is amazing!"
  *         user: "JohnDoe123"
  * @swagger
- * /candy/{id}/like:
+ * /api/candy/{id}/like:
  *   post:
  *     summary: "Like a candy"
  *     tags:
@@ -288,7 +288,7 @@ export default router;
  *       '404':
  *         description: "Candy not found"
  * @swagger
- * /candy/{id}/unlike:
+ * /api/candy/{id}/unlike:
  *   post:
  *     summary: "Unlike a candy"
  *     tags:

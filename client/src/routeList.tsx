@@ -1,11 +1,11 @@
 import {Routes, Route} from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
 import React from 'react';
 import Profile from './Pages/Profile';
 import Home from "./Pages/Home";
 import CandyInsert from "./Pages/CandyInsert";
 import CandyEdit from "./Pages/CandyEdit";
+import Register from './Pages/Register';
+import Login from './Pages/Login';
 
 const RouteList: React.FC = () => (
     <Routes>

@@ -30,7 +30,7 @@ import {
     CANDY_UNLIKE_SUCCESS,
     CANDY_UNLIKE_FAIL,
 } from "../Constants/candyConstants.ts";
-import { Candy } from "../util/types.ts"
+import { Candy } from "../Util/types.ts";
 
 
 interface CandyState {
@@ -151,7 +151,7 @@ export const candyDeleteReducer = (
     }
 };
 
-export const candyCreateReviewReducer = (state = {}, action) => {
+export const candyCreateReviewReducer = (state = {}, action: Action) => {
     switch (action.type) {
       case CANDY_CREATE_REVIEW_REQUEST:
         return { loading: true };

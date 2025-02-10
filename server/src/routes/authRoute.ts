@@ -26,7 +26,7 @@ export default router;
 
 /**
  * @swagger
- * /users:
+ * /api/users:
  *   get:
  *     summary: "Get all users"
  *     tags:
@@ -58,7 +58,7 @@ export default router;
  *             schema:
  *               $ref: "#/components/schemas/User"
  *
- * /users/{userId}:
+ * /api/users/{userId}:
  *   get:
  *     summary: "Get user by ID"
  *     tags:
@@ -104,7 +104,7 @@ export default router;
  *             schema:
  *               $ref: "#/components/schemas/User"
  *
- * /users/login:
+ * /api/users/login:
  *   post:
  *     summary: "User login"
  *     tags:
@@ -118,7 +118,7 @@ export default router;
  *     responses:
  *       '200':
  *         description: "Login successful"
- * /users/googlelogin:
+ * /api/users/googlelogin:
  *   post:
  *     summary: "User login with Google"
  *     tags:

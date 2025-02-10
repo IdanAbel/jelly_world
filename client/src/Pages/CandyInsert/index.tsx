@@ -11,24 +11,22 @@ import {
   Switch,
   FormControlLabel,
   Box,
-  CircularProgress,
   Chip,
 } from "@mui/material";
-
 
 import {
   createCandy,
   listExampleCandies,
 } from "../../Services/candyServices.ts";
 import { RootState } from "../../store.ts";
-import Message from '../../components/Message';
-import { CANDY_CREATE_RESET } from '../../constants/candyConstants';
 import { Candy } from '../../Util/types.ts';
 import CandyTypeSelect from '../../Components/CandyGenersSelect.tsx';
 import ImageInput from '../../Components/ImageInput.tsx';
 import Loader from '../../Components/Loader.tsx';
 import React from 'react';
 import { useAuth } from "../../Context/AuthContext.tsx";
+import { CANDY_CREATE_RESET } from "../../Constants/candyConstants.ts";
+import Message from "../../Components/Message.tsx";
 
 const CandyInsert = () => {
   const dispatch = useDispatch();
@@ -129,7 +127,7 @@ const CandyInsert = () => {
                 fullWidth
                 label="Flavor Name"
                 value={flavorName}
-                onChange={(event) => onChange(event, "flavorName")}
+                onChange={(event: any) => onChange(event, "flavorName")}
                 variant="outlined"
                 sx={{
                   "& .MuiInputBase-root": {
@@ -163,7 +161,7 @@ const CandyInsert = () => {
                     }}
                   >
                     {candies && candies?.length > 0 ? (
-                      candies.map((candy, index) => (
+                      candies.map((candy) => (
                         <Chip label={candy.flavorName} variant="outlined" />
                       ))
                     ) : (
@@ -180,7 +178,7 @@ const CandyInsert = () => {
                 multiline
                 rows={4}
                 value={description}
-                onChange={(event) => onChange(event, "description")}
+                onChange={(event: any) => onChange(event, "description")}
                 variant="outlined"
               />
             </Grid>
@@ -247,7 +245,7 @@ const CandyInsert = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <ImageInput onChange={handleImageChange} />
+              <ImageInput onChange={handleImageChange} label="Upload Candy Image"/>
             </Grid>
             <Grid item xs={12}>
               <Button

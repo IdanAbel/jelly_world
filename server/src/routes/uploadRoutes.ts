@@ -9,7 +9,7 @@ const router = express.Router();
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, join(__dirname, "../assets"));
+      cb(null, "assets/");
     },
     filename: (req, file, cb) => {
       const uniqueFilename = `${file.fieldname}-${Date.now()}${path.extname(
@@ -43,7 +43,7 @@ export default router;
 
 /**
  * @swagger
- * /upload:
+ * /api/upload:
  *   post:
  *     summary: Upload an image
  *     tags:
