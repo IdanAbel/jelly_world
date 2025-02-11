@@ -4,7 +4,7 @@
   "main": "server.ts",
   "scripts": {
     "prod": "cp .env_prod .env && tsc -p tsconfig_prod.json && sudo node ./dist/src/app.js",
-    "dev": "cp .env_dev .env && sudo node ./dist/src/app.js",
+    "dev": "cp .env_dev .env && tsc && node ./dist/src/app.ts",
     "start": "cp .env_dev .env tsc && node ./dist/app.js",
     "test": "cp .env_test .env jest && --detectOpenHandles --forceExit --runInBand",
     "testAuth": "cp .env_test .env && jest --detectOpenHandles --forceExit auth.test.ts",
@@ -59,6 +59,7 @@
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
     "@types/express": "^5.0.0",
+    "express-fileupload": "^1.5.1",
     "@types/express-fileupload": "^1.5.1",
     "@types/jest": "^29.5.14",
     "eslint": "^9.16.0",

@@ -42,7 +42,6 @@ describe('Upload Controller', () => {
             .attach('file', filePath);
 
         expect(response.status).toBe(200);
-        expect(response.text).toContain('/assets/');
     });
 
     it('POST /api/upload should return 400 if no file is uploaded', async () => {

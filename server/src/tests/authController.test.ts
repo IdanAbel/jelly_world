@@ -72,7 +72,7 @@ describe('User Routes', () => {
     it('GET /api/users/profile should return user profile', async () => {
         const response = await request(app)
             .get('/api/users/profile')
-            .set('Authorization', `Bearer ${accessToken}`);
+            .set('Authorization', `Bearer ${accessToken}`).send(user);
         expect(response.status).toBe(200);
         expect(response.body.name).toBe(user.name);
     });
