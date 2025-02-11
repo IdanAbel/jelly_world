@@ -30,7 +30,7 @@ export const getRecommendations = asyncHandler(async (req, res) => {
 });
 
 function calculateCandyScores(aiResponse: string, candies: any[]) {
-    const maxPossibleScore = 20; // Adjust based on the maximum possible raw score
+    const maxPossibleScore = 20; 
     const scores = [];
 
     for (const candy of candies) {
