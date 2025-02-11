@@ -10,6 +10,7 @@ let app: any;
 let server: any;
 let io: any;
 let accessToken: string;
+let userId: any;
 
 const user = {
     name: 'test user',
@@ -42,8 +43,12 @@ beforeAll(async () => {
 
     // Register and log in a test user
     await request(app).post('/api/users').send(user);
+    const registeredUser = await User.findOne({ email: user.email });
+    console.log("user iid", registeredUser)
+    userId = registeredUser?._id;
     const loginResponse = await request(app).post('/api/users/login').send(user);
     accessToken = loginResponse.body.token;
+
 }, 10000);
 afterAll(async () => {
     // Clean up and close connections
@@ -136,13 +141,40 @@ describe('Candy Controller', () => {
         expect(response.body).toBeInstanceOf(Array);
     });
 
-    // Test DELETE /api/candy/:id
-    it('DELETE /api/candy/:id should delete a candy', async () => {
+
+
+    it('POST /api/candy/:id/like should like a candy', async () => {
         const response = await request(app)
-            .delete(`/api/candy/${candyId}`)
-            .set('Authorization', `Bearer ${accessToken}`);
+            .post(`/api/candy/${candyId}/like`)
+            .set('Authorization', `Bearer ${accessToken}`)
+            .send({ userId });
+            console.log(response.status);
+            console.log(response.body);
+
 
         expect(response.status).toBe(200);
-        expect(response.body.message).toBe('Candy removed');
     });
+
+    it('POST /api/candy/:id/unlike should unlike a candy', async () => {
+        console.log("iiii", userId)
+        const response = await request(app)
+            .post(`/api/candy/${candyId}/unlike`)
+            .set('Authorization', `Bearer ${accessToken}`)
+            .send({ userId });
+            console.log(response.status);
+            console.log(response.body);
+
+
+        expect(response.status).toBe(200);
+    });
+
+        // Test DELETE /api/candy/:id
+        it('DELETE /api/candy/:id should delete a candy', async () => {
+            const response = await request(app)
+                .delete(`/api/candy/${candyId}`)
+                .set('Authorization', `Bearer ${accessToken}`);
+    
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe('Candy removed');
+        });
 });
